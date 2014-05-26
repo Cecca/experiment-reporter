@@ -35,6 +35,14 @@ public class Table {
     return this.asOrgTable(headers);
   }
 
+  public String asOrgTable(String... columns) {
+    ArrayList<String> cols = new ArrayList<String>(columns.length);
+    for(String s : columns) {
+      cols.add(s);
+    }
+    return this.asOrgTable(cols);
+  }
+
   public String asOrgTable(Collection<String> columns) {
     if(!headers.containsAll(columns)) {
       throw new IllegalArgumentException(
@@ -104,6 +112,7 @@ public class Table {
 
     Table table = new Table().addRow(row1).addRow(row2);
     System.out.println(table.asOrgTable());
+    System.out.println(table.asOrgTable("surname","name"));
   }
 
 }
