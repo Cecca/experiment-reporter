@@ -1,0 +1,88 @@
+package it.unipd.dei.experiment;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Experiment {
+
+  private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+
+  private String experimentClass;
+  private String name;
+  private Date date;
+  private Map<String, Object> tags;
+  private Map<String,Table> tables;
+
+  public Experiment(String experimentClass, String name) {
+    this.experimentClass = experimentClass;
+    this.name = name;
+    this.date = new Date();
+    tags = new HashMap<String, Object>();
+    tables = new HashMap<String, Table>();
+  }
+
+  public Experiment tag(String name, Object value) {
+    tags.put(name, value);
+    return this;
+  }
+
+  public Experiment append(String tableName, Object... rowElements) {
+    if(!tables.containsKey(tableName)) {
+      tables.put(tableName, new Table());
+    }
+    tables.get(tableName).addRow(rowElements);
+    return this;
+  }
+
+  public Experiment append(String tableName, Map<String, Object> row) {
+    if(!tables.containsKey(tableName)) {
+      tables.put(tableName, new Table());
+    }
+    tables.get(tableName).addRow(row);
+    return this;
+  }
+
+  public String toSimpleString() {
+    StringBuffer sb = new StringBuffer();
+    sb.append("==== ").append(name)
+      .append(" [").append(experimentClass).append("] ")
+      .append(" ====\n\n");
+    sb.append("Date ").append(dateFormat.format(date)).append("\n\n");
+    sb.append("---- Tags ----\n\n");
+    for(Map.Entry<String, Object> t : tags.entrySet()) {
+      sb.append("    ").append(t.getKey())
+        .append(" : ").append(t.getValue()).append("\n");
+    }
+    sb.append("\n---- Tables ----\n\n");
+    for(Map.Entry<String, Table> t : tables.entrySet()) {
+      sb.append("-- ").append(t.getKey()).append(" --\n\n")
+       .append(t.getValue().asOrgTable()).append('\n');
+    }
+    return sb.toString();
+  }
+
+  @Override
+  public String toString() {
+    return "Experiment{class = " + experimentClass +
+        ", name" + name + ", " + dateFormat.format(date) + "}";
+  }
+
+  public static void main(String[] args) {
+    Experiment exp = new Experiment("matrix-multiplication", "Test");
+    exp.tag("replication", 8)
+      .tag("localMemory", 2)
+      .tag("dimension", 16);
+
+    exp.append("rounds",
+      "round", 0,
+      "time", 119823)
+      .append("rounds",
+        "round", 1,
+        "time", 123876);
+
+    System.out.println(exp.toSimpleString());
+  }
+}
