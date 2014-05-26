@@ -98,12 +98,14 @@ public class Table {
     }
     sb.append('\n');
 
-    sb.append('+');
+    sb.append('|');
+    int i = 0;
     for(String c : columns) {
       sb.append(pad("", widths.get(c), '-'));
-      sb.append('+');
+      if(i++ < columns.size() - 1)
+        sb.append('+');
     }
-    sb.append('\n');
+    sb.append("|\n");
 
     for(Map<String, Object> row : rows) {
       sb.append('|');
