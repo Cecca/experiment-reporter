@@ -28,6 +28,18 @@ public class Table {
     this.headers = null;
   }
 
+  public Table addRow(Object... rowEntries) {
+    if(rowEntries.length % 2 != 0) {
+      throw new IllegalArgumentException(
+        "addRow() should have an even number of arguments");
+    }
+    HashMap<String, Object> row = new HashMap<String, Object>();
+    for(int i = 0; i < rowEntries.length;) {
+      row.put(rowEntries[i++].toString(), rowEntries[i++]);
+    }
+    return this.addRow(row);
+  }
+
   public Table addRow(Map<String, Object> row) {
     if(headers == null) {
       headers = row.keySet();
@@ -117,17 +129,18 @@ public class Table {
   }
 
   public static void main(String[] args) {
-    Map<String, Object> row1 = new HashMap<String, Object>();
-    row1.put("name", "Matteo");
-    row1.put("surname", "Ceccarello");
+    Table table = new Table()
+      .addRow(
+        "name", "matteo",
+        "surname", "ceccarello",
+        "age", 25)
+      .addRow(
+        "name", "mario",
+        "surname", "rossi",
+        "age", 32);
 
-    Map<String, Object> row2 = new HashMap<String, Object>();
-    row2.put("name", "Mario");
-    row2.put("surname", "Rossi");
-
-    Table table = new Table().addRow(row1).addRow(row2);
     System.out.println(table.asOrgTable());
-    System.out.println(table.asOrgTable("surname","name"));
+    System.out.println(table.asOrgTable("name", "surname", "age"));
   }
 
 }
