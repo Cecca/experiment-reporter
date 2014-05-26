@@ -15,7 +15,7 @@ public class Experiment {
   private String experimentClass;
   private String name;
   private Date date;
-  private Collection<String> notes;
+  private Collection<Note> notes;
   private Map<String, Object> tags;
   private Map<String,Table> tables;
 
@@ -23,7 +23,7 @@ public class Experiment {
     this.experimentClass = experimentClass;
     this.name = name;
     this.date = new Date();
-    notes = new LinkedList<String>();
+    notes = new LinkedList<Note>();
     tags = new HashMap<String, Object>();
     tables = new HashMap<String, Table>();
   }
@@ -34,7 +34,7 @@ public class Experiment {
   }
 
   public Experiment note(String message) {
-    notes.add(message);
+    notes.add(new Note(new Date(), message));
     return this;
   }
 
@@ -103,7 +103,7 @@ public class Experiment {
     return tables;
   }
 
-  public Collection<String> getNotes() {
+  public Collection<Note> getNotes() {
     return notes;
   }
 
@@ -122,6 +122,17 @@ public class Experiment {
     out.write(OrgFileFormatter.format(this));
     out.close();
   }
+
+  protected static class Note {
+    protected Date date;
+    protected String message;
+
+    public Note(Date date, String message) {
+      this.date = date;
+      this.message = message;
+    }
+  }
+
 
   public static void main(String[] args) throws FileNotFoundException {
     Experiment exp = new Experiment("matrix-multiplication", "Test");

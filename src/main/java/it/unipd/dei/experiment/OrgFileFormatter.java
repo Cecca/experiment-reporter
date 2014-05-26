@@ -28,9 +28,10 @@ public class OrgFileFormatter {
 
   private static String notes(Experiment experiment) {
     StringBuffer sb = new StringBuffer();
-    for(String note : experiment.getNotes()) {
-      sb.append("  - ").append(note)
-        .append("\n");
+    for(Experiment.Note note : experiment.getNotes()) {
+      sb.append("  - ")
+        .append(orgDateFormat.format(note.date)).append("  ")
+        .append(note.message).append("\n");
     }
     return sb.toString();
   }
