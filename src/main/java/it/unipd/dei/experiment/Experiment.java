@@ -1,5 +1,9 @@
 package it.unipd.dei.experiment;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -94,7 +98,23 @@ public class Experiment {
     return tables;
   }
 
-  public static void main(String[] args) {
+  public void saveAsOrgFile() throws FileNotFoundException {
+    this.saveAsOrgFile(".");
+  }
+
+  public void saveAsOrgFile(String directory) throws FileNotFoundException {
+    File dir = new File(directory);
+    if(!dir.exists() && !dir.mkdir()) {
+      throw new RuntimeException("Cannot create " + directory + "directory");
+    }
+    String fileName = name + "-" + dateFormat.format(date) + ".org";
+    File outFile = new File(dir, fileName.replace(" ", "_"));
+    PrintWriter out = new PrintWriter(new FileOutputStream(outFile));
+    out.write(OrgFileFormatter.format(this));
+    out.close();
+  }
+
+  public static void main(String[] args) throws FileNotFoundException {
     Experiment exp = new Experiment("matrix-multiplication", "Test");
     exp.tag("replication", 8)
       .tag("localMemory", 2)
@@ -114,7 +134,6 @@ public class Experiment {
         "radius", 3,
         "count", 67);
 
-    System.out.println(OrgFileFormatter.format(exp));
-
+    exp.saveAsOrgFile();
   }
 }
