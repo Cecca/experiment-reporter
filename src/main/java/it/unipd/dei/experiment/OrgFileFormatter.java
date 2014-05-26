@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class OrgFileFormatter {
 
-  public static DateFormat orgDateFormat = new SimpleDateFormat("<yyyy-MM-dd EEE HH:mm>");
+  public static DateFormat orgDateFormat = new SimpleDateFormat("[yyyy-MM-dd EEE HH:mm]");
 
   public static String format(Experiment experiment) {
     StringBuffer sb = new StringBuffer();
