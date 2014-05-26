@@ -70,6 +70,30 @@ public class Experiment {
         ", name" + name + ", " + dateFormat.format(date) + "}";
   }
 
+  protected DateFormat getDateFormat() {
+    return dateFormat;
+  }
+
+  protected String getExperimentClass() {
+    return experimentClass;
+  }
+
+  protected String getName() {
+    return name;
+  }
+
+  protected Date getDate() {
+    return date;
+  }
+
+  protected Map<String, Object> getTags() {
+    return tags;
+  }
+
+  protected Map<String, Table> getTables() {
+    return tables;
+  }
+
   public static void main(String[] args) {
     Experiment exp = new Experiment("matrix-multiplication", "Test");
     exp.tag("replication", 8)
@@ -83,6 +107,14 @@ public class Experiment {
         "round", 1,
         "time", 123876);
 
-    System.out.println(exp.toSimpleString());
+    exp.append("radius",
+      "radius", 2,
+      "count", 10)
+      .append("radius",
+        "radius", 3,
+        "count", 67);
+
+    System.out.println(OrgFileFormatter.format(exp));
+
   }
 }
