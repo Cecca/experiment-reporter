@@ -6,9 +6,7 @@ import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Experiment {
 
@@ -17,6 +15,7 @@ public class Experiment {
   private String experimentClass;
   private String name;
   private Date date;
+  private Collection<String> notes;
   private Map<String, Object> tags;
   private Map<String,Table> tables;
 
@@ -24,12 +23,18 @@ public class Experiment {
     this.experimentClass = experimentClass;
     this.name = name;
     this.date = new Date();
+    notes = new LinkedList<String>();
     tags = new HashMap<String, Object>();
     tables = new HashMap<String, Table>();
   }
 
   public Experiment tag(String name, Object value) {
     tags.put(name, value);
+    return this;
+  }
+
+  public Experiment note(String message) {
+    notes.add(message);
     return this;
   }
 
@@ -98,6 +103,10 @@ public class Experiment {
     return tables;
   }
 
+  public Collection<String> getNotes() {
+    return notes;
+  }
+
   public void saveAsOrgFile() throws FileNotFoundException {
     this.saveAsOrgFile(".");
   }
@@ -116,6 +125,9 @@ public class Experiment {
 
   public static void main(String[] args) throws FileNotFoundException {
     Experiment exp = new Experiment("matrix-multiplication", "Test");
+
+    exp.note("This is a test experiment");
+
     exp.tag("replication", 8)
       .tag("localMemory", 2)
       .tag("dimension", 16);
@@ -126,6 +138,8 @@ public class Experiment {
       .append("rounds",
         "round", 1,
         "time", 123876);
+
+    exp.note("You can add notes at any time");
 
     exp.append("radius",
       "radius", 2,

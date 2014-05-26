@@ -11,6 +11,7 @@ public class OrgFileFormatter {
   public static String format(Experiment experiment) {
     StringBuffer sb = new StringBuffer();
     sb.append(headline(experiment));
+    sb.append(notes(experiment));
     sb.append(tags(experiment));
     sb.append(tables(experiment));
     return sb.toString();
@@ -22,6 +23,15 @@ public class OrgFileFormatter {
       .append("  ").append(orgDateFormat.format(experiment.getDate()))
       .append("      ").append(":").append(experiment.getExperimentClass()).append(":")
       .append("\n");
+    return sb.toString();
+  }
+
+  private static String notes(Experiment experiment) {
+    StringBuffer sb = new StringBuffer();
+    for(String note : experiment.getNotes()) {
+      sb.append("  - ").append(note)
+        .append("\n");
+    }
     return sb.toString();
   }
 
