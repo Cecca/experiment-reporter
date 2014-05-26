@@ -108,7 +108,7 @@ public class Experiment {
   }
 
   public void saveAsOrgFile() throws FileNotFoundException {
-    this.saveAsOrgFile(".");
+    this.saveAsOrgFile(System.getProperty("experiments.report.dir", "."));
   }
 
   public void saveAsOrgFile(String directory) throws FileNotFoundException {
