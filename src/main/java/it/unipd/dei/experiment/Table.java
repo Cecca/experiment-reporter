@@ -59,24 +59,38 @@ public class Table {
   }
 
   public String asOrgTable() {
-    return this.asOrgTable(headers);
+    return this.asOrgTable(new HashMap<String, Object>(), headers);
+  }
+
+  public String asOrgTable(Map<String, Object> tags) {
+    return this.asOrgTable(tags, headers);
   }
 
   public String asOrgTable(String... columns) {
+    return this.asOrgTable(new HashMap<String, Object>(), columns);
+  }
+
+
+  public String asOrgTable(Map<String, Object> tags, String... columns) {
     ArrayList<String> cols = new ArrayList<String>(columns.length);
     for(String s : columns) {
       cols.add(s);
     }
-    return this.asOrgTable(cols);
+    return this.asOrgTable(tags, cols);
   }
 
-  public String asOrgTable(Collection<String> columns) {
+  public String asOrgTable(Map<String, Object> tags, Collection<String> columns) {
     if(!headers.containsAll(columns)) {
       throw new IllegalArgumentException(
         "Some columns are undefined in the table");
     }
 
+    Collection<String> tagColumns = tags.keySet();
+
     Map<String, Integer> widths = new HashMap<String, Integer>();
+    for(String c : tagColumns) {
+      widths.put(c, Math.max(c.length(), tags.get(c).toString().length()));
+    }
     for(String c : columns) {
       widths.put(c, c.length());
     }
@@ -92,6 +106,10 @@ public class Table {
     StringBuffer sb = new StringBuffer();
 
     sb.append('|');
+    for(String c : tagColumns) {
+      sb.append(pad(c, widths.get(c), ' '));
+      sb.append('|');
+    }
     for(String c : columns) {
       sb.append(pad(c, widths.get(c), ' '));
       sb.append('|');
@@ -100,15 +118,25 @@ public class Table {
 
     sb.append('|');
     int i = 0;
+    int numCols = tagColumns.size() + columns.size();
+    for(String c : tagColumns) {
+      sb.append(pad("", widths.get(c), '-'));
+      if(i++ < numCols - 1)
+        sb.append('+');
+    }
     for(String c : columns) {
       sb.append(pad("", widths.get(c), '-'));
-      if(i++ < columns.size() - 1)
+      if(i++ < numCols - 1)
         sb.append('+');
     }
     sb.append("|\n");
 
     for(Map<String, Object> row : rows) {
       sb.append('|');
+      for(String k : tagColumns) {
+        sb.append(pad(tags.get(k).toString(), widths.get(k), ' '));
+        sb.append('|');
+      }
       for(String k : columns) {
         sb.append(pad(row.get(k).toString(), widths.get(k), ' '));
         sb.append('|');
