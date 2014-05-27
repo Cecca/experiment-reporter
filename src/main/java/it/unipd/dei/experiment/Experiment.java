@@ -174,7 +174,7 @@ public class Experiment {
         "radius", 3,
         "count", 67);
 
-    System.out.println(exp.toSimpleString());
+    System.out.println(EdnFormatter.format(exp));
 
   }
 }

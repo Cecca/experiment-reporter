@@ -58,6 +58,10 @@ public class Table {
     return this;
   }
 
+  protected Collection<Map<String, Object>> getRows() {
+    return rows;
+  }
+
   public String asOrgTable() {
     return this.asOrgTable(new HashMap<String, Object>(), headers);
   }
