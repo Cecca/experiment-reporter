@@ -19,7 +19,7 @@ import java.util.*;
 
 public class Table {
 
-  private Collection<Map<String, Object>> rows;
+  private List<Map<String, Object>> rows;
 
   private Collection<String> headers;
 
@@ -58,7 +58,7 @@ public class Table {
     return this;
   }
 
-  protected Collection<Map<String, Object>> getRows() {
+  protected List<Map<String, Object>> getRows() {
     return rows;
   }
 

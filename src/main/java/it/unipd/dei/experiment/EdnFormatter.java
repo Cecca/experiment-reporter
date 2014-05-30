@@ -17,10 +17,7 @@ package it.unipd.dei.experiment;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EdnFormatter {
 
@@ -55,8 +52,9 @@ public class EdnFormatter {
     sb.append(indent).append(formatName(experiment)).append("\n");
     sb.append(indent).append(formatDate(experiment)).append("\n");
     sb.append(indent).append(formatNotes(experiment)).append("\n");
-
-
+    sb.append(indent).append(formatTags(experiment)).append("\n");
+    sb.append(indent).append(formatTables(experiment));
+    sb.append("}");
     return sb.toString();
   }
 
@@ -78,6 +76,35 @@ public class EdnFormatter {
     int indentLen = fmt("notes").length() + 2;
     incIndent(indentLen);
     sb.append(fmt(exp.getNotes()));
+    decIndent(indentLen + 1);
+    return sb.toString();
+  }
+
+  private String formatTags(Experiment exp) {
+    StringBuffer sb = new StringBuffer();
+    sb.append(fmt("tags")).append(" ");
+    sb.append(fmt(exp.getTags()));
+    return sb.toString();
+  }
+
+  private String formatTables(Experiment exp) {
+    StringBuffer sb = new StringBuffer();
+    sb.append(fmt("tables")).append(" ");
+    int indentLen = fmt("tables").length() + 1;
+    incIndent(indentLen);
+    int
+      i = 0,
+      n = exp.getTables().size();
+
+    sb.append("{");
+    for(Map.Entry<String, Table> e : exp.getTables().entrySet()) {
+      sb.append(fmt(e.getKey())).append("\n").append(indent);
+      sb.append(fmt(e.getValue().getRows()));
+      if(i++ < n-1) {
+        sb.append("\n").append(indent);
+      }
+    }
+    sb.append("}");
     decIndent(indentLen);
     return sb.toString();
   }
@@ -85,14 +112,22 @@ public class EdnFormatter {
   private String fmt(Object o) {
     if(o instanceof String)
       return fmt((String) o);
+    if(o instanceof Number)
+      return fmt((Number) o);
     if(o instanceof Date)
       return fmt((Date) o);
     if(o instanceof Experiment.Note)
       return fmt((Experiment.Note) o);
     if(o instanceof List)
       return fmt((List) o);
+    if(o instanceof Map)
+      return fmt((Map) o);
 
     return fmt(o.toString());
+  }
+
+  private String fmt(Number n) {
+    return n.toString();
   }
 
   private String fmt(String s) {
@@ -105,6 +140,21 @@ public class EdnFormatter {
 
   private String fmt(Experiment.Note n) {
     return "[" + fmt(n.date) + " " + fmt(n.message) + "]";
+  }
+
+  private String fmt(Map<String, Object> m) {
+    StringBuffer sb = new StringBuffer();
+    sb.append("{");
+    int
+      i = 0,
+      n = m.size();
+    for(Map.Entry<String, Object> e : m.entrySet()) {
+      sb.append(fmt(e.getKey())).append(" ").append(fmt(e.getValue()));
+      if(i++ < n-1)
+        sb.append(" ");
+    }
+    sb.append("}");
+    return sb.toString();
   }
 
   private String fmt(List<Object> l) {
