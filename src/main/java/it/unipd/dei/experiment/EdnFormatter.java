@@ -19,6 +19,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 public class EdnFormatter {
@@ -26,115 +27,101 @@ public class EdnFormatter {
   private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
   public static String format(Experiment experiment) {
+    return new EdnFormatter().statefulFormat(experiment);
+  }
+
+  private String indent = "";
+
+  private void incIndent(int amount) {
+    StringBuffer sb = new StringBuffer(indent);
+    for(int i=0; i<amount; i++)
+      sb.append(' ');
+    indent = sb.toString();
+  }
+
+  private void decIndent(int amount) {
+    StringBuffer sb = new StringBuffer(indent);
+    int newSize = sb.length() - amount;
+    if(newSize < 0)
+      throw new IllegalArgumentException("Cannot decrease indentation to negative numbers");
+    indent = sb.substring(0, newSize);
+  }
+
+  private String statefulFormat(Experiment experiment) {
     StringBuffer sb = new StringBuffer();
     sb.append("{");
-    sb.append(format("experiment-class", "")).append(" ")
-      .append(format(experiment.getExperimentClass(), "")).append("\n");
+    sb.append(formatClass(experiment)).append("\n");
+    incIndent(1);
+    sb.append(indent).append(formatName(experiment)).append("\n");
+    sb.append(indent).append(formatDate(experiment)).append("\n");
+    sb.append(indent).append(formatNotes(experiment)).append("\n");
 
-    sb.append(format("name", " ")).append(" ")
-      .append(format(experiment.getName(), "")).append("\n");
 
-    sb.append(format("date", " ")).append(" ")
-      .append(format(experiment.getDate(), "")).append("\n");
-
-    sb.append(format("notes", " ")).append(" ")
-      .append(format(experiment.getNotes(), "         ")).append("\n");
-
-    sb.append(format("tables", " ")).append(" ")
-      .append(format(experiment.getTables(), "          "));
-
-    sb.append("}");
     return sb.toString();
   }
 
-  public static String format(Object o, String indent) {
-    if(o instanceof String)
-      return format((String) o, indent);
-    if(o instanceof Number)
-      return format((Number) o, indent);
-    if(o instanceof Table)
-      return format((Table) o, indent);
-    if(o instanceof Map)
-      return format((Map) o, indent);
-    if(o instanceof Date)
-      return format((Date) o, indent);
-    if(o instanceof Experiment.Note)
-      return format((Experiment.Note) o, indent);
-    if(o instanceof Collection)
-      return format((Collection) o, indent);
-
-    return format(o.toString(), indent);
+  private String formatClass(Experiment exp) {
+    return fmt("class") + " " + fmt(exp.getExperimentClass());
   }
 
-  public static String format(Collection<Object> coll, String indent) {
+  private String formatName(Experiment exp) {
+    return fmt("name") + " " + fmt(exp.getName());
+  }
+
+  private String formatDate(Experiment exp) {
+    return fmt("date") + " " + fmt(exp.getDate());
+  }
+
+  private String formatNotes(Experiment exp) {
+    StringBuffer sb = new StringBuffer();
+    sb.append(fmt("notes")).append(" ");
+    int indentLen = fmt("notes").length() + 2;
+    incIndent(indentLen);
+    sb.append(fmt(exp.getNotes()));
+    decIndent(indentLen);
+    return sb.toString();
+  }
+
+  private String fmt(Object o) {
+    if(o instanceof String)
+      return fmt((String) o);
+    if(o instanceof Date)
+      return fmt((Date) o);
+    if(o instanceof Experiment.Note)
+      return fmt((Experiment.Note) o);
+    if(o instanceof List)
+      return fmt((List) o);
+
+    return fmt(o.toString());
+  }
+
+  private String fmt(String s) {
+    return "\"" + s + "\"";
+  }
+
+  private String fmt(Date d) {
+    return "#inst \"" + dateFormat.format(d) + "\"";
+  }
+
+  private String fmt(Experiment.Note n) {
+    return "[" + fmt(n.date) + " " + fmt(n.message) + "]";
+  }
+
+  private String fmt(List<Object> l) {
     StringBuffer sb = new StringBuffer();
     sb.append("[");
-
-    int n = coll.size();
     int i = 0;
-    for(Object obj : coll) {
-      sb.append(format(obj, ""));
-      if(i++ < n-1) {
-        sb.append("\n ").append(indent);
-      }
+    int n = l.size();
+    for(Object obj : l) {
+      sb.append(fmt(obj));
+      if(i++ == 1)
+        incIndent(1);
+      if(i < n)
+        sb.append("\n").append(indent);
     }
     sb.append("]");
 
     return sb.toString();
-  }
-
-  public static String format(Date date, String indent) {
-    return indent + dateFormat.format(date);
-  }
-
-  public static String format(Experiment.Note note, String indent) {
-    return indent + "[" + format(note.date, "") + " " + format(note.message, "") + "]";
-  }
-
-  public static String format(String s, String indent) {
-    return indent + "\"" + s + "\"";
-  }
-
-  public static String format(Number i, String indent) {
-    return indent + i.toString();
-  }
-
-  public static String format(Map<String, Object> map, String indent) {
-    StringBuffer sb = new StringBuffer();
-    sb.append("{");
-    int numEntries = map.size();
-    int i = 0;
-    for(Map.Entry<String, Object> e : map.entrySet()) {
-      sb.append(format(e.getKey(), "")).append(" ").append(format(e.getValue(), indent));
-      if(i++ < numEntries - 1) {
-        sb.append(" ");
-      }
-    }
-    sb.append("}");
-    return sb.toString();
-  }
-
-  public static String format(Table table, String indent) {
-    StringBuffer sb = new StringBuffer();
-    sb.append(indent).append("[");
-    int numRows = table.getRows().size();
-    int i = 0;
-    for(Map<String, Object> row : table.getRows()) {
-      sb.append(format(row, ""));
-      if(i++ < numRows - 1) {
-        sb.append("\n ").append(indent);
-      }
-    }
-    sb.append("]");
-    return sb.toString();
-  }
-
-  public static void main(String[] args) {
-    Table t = new Table();
-
-    t.addRow("name", "Matteo", "age", 24).addRow("name", "Martina", "age", 24);
-
-    System.out.println(format(t, ""));
   }
 
 }

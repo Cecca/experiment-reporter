@@ -30,7 +30,7 @@ public class Experiment {
   private String experimentClass;
   private String name;
   private Date date;
-  private Collection<Note> notes;
+  private List<Note> notes;
   private Map<String, Object> tags;
   private Map<String,Table> tables;
 
@@ -118,7 +118,7 @@ public class Experiment {
     return tables;
   }
 
-  public Collection<Note> getNotes() {
+  public List<Note> getNotes() {
     return notes;
   }
 
