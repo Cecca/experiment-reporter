@@ -32,6 +32,7 @@ public class EdnFormatter {
     sb.append("{");
     sb.append(formatClass(experiment)).append(" ");
     sb.append(" ").append(formatName(experiment)).append(" ");
+    sb.append(" ").append(formatSuccess(experiment)).append(" ");
     sb.append(" ").append(formatDate(experiment)).append(" ");
     sb.append(" ").append(formatNotes(experiment)).append(" ");
     sb.append(" ").append(formatTags(experiment)).append(" ");
@@ -46,6 +47,10 @@ public class EdnFormatter {
 
   private String formatName(Experiment exp) {
     return fmt("name") + " " + fmt(exp.getName());
+  }
+
+  private String formatSuccess(Experiment exp) {
+    return fmt("successful") + " " + fmt(exp.isSuccessful());
   }
 
   private String formatDate(Experiment exp) {
@@ -90,6 +95,8 @@ public class EdnFormatter {
   private String fmt(Object o) {
     if(o instanceof String)
       return fmt((String) o);
+    if(o instanceof Boolean)
+      return fmt((Boolean) o);
     if(o instanceof Number)
       return fmt((Number) o);
     if(o instanceof Date)
@@ -102,6 +109,10 @@ public class EdnFormatter {
       return fmt((Map) o);
 
     return fmt(o.toString());
+  }
+
+  private String fmt(Boolean b) {
+    return b.toString();
   }
 
   private String fmt(Number n) {

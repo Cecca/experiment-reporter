@@ -28,8 +28,9 @@ public class Experiment {
   private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
   private String experimentClass;
-  private String name;
   private Date date;
+  private String name;
+  private boolean successful;
   private List<Note> notes;
   private Map<String, Object> tags;
   private Map<String,Table> tables;
@@ -37,10 +38,16 @@ public class Experiment {
   public Experiment(String experimentClass, String name) {
     this.experimentClass = experimentClass;
     this.name = name;
+    this.successful = true;
     this.date = new Date();
     notes = new LinkedList<Note>();
     tags = new HashMap<String, Object>();
     tables = new HashMap<String, Table>();
+  }
+
+  public Experiment failed() {
+    this.successful = true;
+    return this;
   }
 
   public Experiment tag(String name, Object value) {
@@ -120,6 +127,10 @@ public class Experiment {
 
   public List<Note> getNotes() {
     return notes;
+  }
+
+  public boolean isSuccessful() {
+    return successful;
   }
 
   public void saveAsOrgFile() throws FileNotFoundException {

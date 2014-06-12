@@ -26,6 +26,8 @@ public class OrgFileFormatter {
   public static String format(Experiment experiment) {
     StringBuffer sb = new StringBuffer();
     sb.append(headline(experiment));
+    if(!experiment.isSuccessful())
+      sb.append("  *Failed experiment*\n");
     sb.append(notes(experiment));
     sb.append(tags(experiment));
     sb.append(tables(experiment));
