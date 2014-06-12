@@ -138,6 +138,22 @@ public class Experiment {
     out.close();
   }
 
+  public void saveAsEdnFile() throws FileNotFoundException {
+    this.saveAsEdnFile(System.getProperty("experiments.report.dir", "."));
+  }
+
+  public void saveAsEdnFile(String directory) throws FileNotFoundException {
+    File dir = new File(directory);
+    if(!dir.exists() && !dir.mkdir()) {
+      throw new RuntimeException("Cannot create " + directory + "directory");
+    }
+    String fileName = name + "-" + dateFormat.format(date) + ".edn";
+    File outFile = new File(dir, fileName.replace(" ", "_"));
+    PrintWriter out = new PrintWriter(new FileOutputStream(outFile));
+    out.write(EdnFormatter.format(this));
+    out.close();
+  }
+
   protected static class Note {
     protected Date date;
     protected String message;
@@ -174,7 +190,7 @@ public class Experiment {
         "radius", 3,
         "count", 67);
 
-    System.out.println(EdnFormatter.format(exp));
+    exp.saveAsEdnFile();
 
   }
 }
