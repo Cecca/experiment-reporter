@@ -27,33 +27,15 @@ public class EdnFormatter {
     return new EdnFormatter().statefulFormat(experiment);
   }
 
-  private String indent = "";
-
-  private void incIndent(int amount) {
-    StringBuffer sb = new StringBuffer(indent);
-    for(int i=0; i<amount; i++)
-      sb.append(' ');
-    indent = sb.toString();
-  }
-
-  private void decIndent(int amount) {
-    StringBuffer sb = new StringBuffer(indent);
-    int newSize = sb.length() - amount;
-    if(newSize < 0)
-      throw new IllegalArgumentException("Cannot decrease indentation to negative numbers");
-    indent = sb.substring(0, newSize);
-  }
-
   private String statefulFormat(Experiment experiment) {
     StringBuffer sb = new StringBuffer();
     sb.append("{");
-    sb.append(formatClass(experiment)).append("\n");
-    incIndent(1);
-    sb.append(indent).append(formatName(experiment)).append("\n");
-    sb.append(indent).append(formatDate(experiment)).append("\n");
-    sb.append(indent).append(formatNotes(experiment)).append("\n");
-    sb.append(indent).append(formatTags(experiment)).append("\n");
-    sb.append(indent).append(formatTables(experiment));
+    sb.append(formatClass(experiment)).append(" ");
+    sb.append(" ").append(formatName(experiment)).append(" ");
+    sb.append(" ").append(formatDate(experiment)).append(" ");
+    sb.append(" ").append(formatNotes(experiment)).append(" ");
+    sb.append(" ").append(formatTags(experiment)).append(" ");
+    sb.append(" ").append(formatTables(experiment));
     sb.append("}");
     return sb.toString();
   }
@@ -74,9 +56,7 @@ public class EdnFormatter {
     StringBuffer sb = new StringBuffer();
     sb.append(fmt("notes")).append(" ");
     int indentLen = fmt("notes").length() + 2;
-    incIndent(indentLen);
     sb.append(fmt(exp.getNotes()));
-    decIndent(indentLen + 1);
     return sb.toString();
   }
 
@@ -91,21 +71,19 @@ public class EdnFormatter {
     StringBuffer sb = new StringBuffer();
     sb.append(fmt("tables")).append(" ");
     int indentLen = fmt("tables").length() + 1;
-    incIndent(indentLen);
     int
       i = 0,
       n = exp.getTables().size();
 
     sb.append("{");
     for(Map.Entry<String, Table> e : exp.getTables().entrySet()) {
-      sb.append(fmt(e.getKey())).append("\n").append(indent);
+      sb.append(fmt(e.getKey())).append(" ");
       sb.append(fmt(e.getValue().getRows()));
       if(i++ < n-1) {
-        sb.append("\n").append(indent);
+        sb.append(" ");
       }
     }
     sb.append("}");
-    decIndent(indentLen);
     return sb.toString();
   }
 
@@ -165,9 +143,8 @@ public class EdnFormatter {
     for(Object obj : l) {
       sb.append(fmt(obj));
       if(i++ == 1)
-        incIndent(1);
       if(i < n)
-        sb.append("\n").append(indent);
+        sb.append(" ");
     }
     sb.append("]");
 
