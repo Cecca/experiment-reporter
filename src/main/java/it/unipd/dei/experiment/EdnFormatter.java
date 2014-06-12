@@ -113,7 +113,7 @@ public class EdnFormatter {
   }
 
   private String fmt(Date d) {
-    return "#inst \"" + dateFormat.format(d) + "\"";
+    return "\"" + dateFormat.format(d) + "\"";
   }
 
   private String fmt(Experiment.Note n) {
