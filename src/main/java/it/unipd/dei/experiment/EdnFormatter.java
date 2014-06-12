@@ -42,39 +42,38 @@ public class EdnFormatter {
   }
 
   private String formatClass(Experiment exp) {
-    return fmt("class") + " " + fmt(exp.getExperimentClass());
+    return keyword("class") + " " + fmt(exp.getExperimentClass());
   }
 
   private String formatName(Experiment exp) {
-    return fmt("name") + " " + fmt(exp.getName());
+    return keyword("name") + " " + fmt(exp.getName());
   }
 
   private String formatSuccess(Experiment exp) {
-    return fmt("successful") + " " + fmt(exp.isSuccessful());
+    return keyword("successful") + " " + fmt(exp.isSuccessful());
   }
 
   private String formatDate(Experiment exp) {
-    return fmt("date") + " " + fmt(exp.getDate());
+    return keyword("date") + " " + fmt(exp.getDate());
   }
 
   private String formatNotes(Experiment exp) {
     StringBuffer sb = new StringBuffer();
-    sb.append(fmt("notes")).append(" ");
-    int indentLen = fmt("notes").length() + 2;
+    sb.append(keyword("notes")).append(" ");
     sb.append(fmt(exp.getNotes()));
     return sb.toString();
   }
 
   private String formatTags(Experiment exp) {
     StringBuffer sb = new StringBuffer();
-    sb.append(fmt("tags")).append(" ");
+    sb.append(keyword("tags")).append(" ");
     sb.append(fmt(exp.getTags()));
     return sb.toString();
   }
 
   private String formatTables(Experiment exp) {
     StringBuffer sb = new StringBuffer();
-    sb.append(fmt("tables")).append(" ");
+    sb.append(keyword("tables")).append(" ");
     int indentLen = fmt("tables").length() + 1;
     int
       i = 0,
@@ -90,6 +89,10 @@ public class EdnFormatter {
     }
     sb.append("}");
     return sb.toString();
+  }
+
+  private String keyword(String s) {
+    return ":" + s;
   }
 
   private String fmt(Object o) {
