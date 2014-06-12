@@ -37,10 +37,10 @@ public class Table {
     for(int i = 0; i < rowEntries.length;) {
       row.put(rowEntries[i++].toString(), rowEntries[i++]);
     }
-    return this.addRow(row);
+    return this.addRowMap(row);
   }
 
-  public Table addRow(Map<String, Object> row) {
+  public Table addRowMap(Map<String, Object> row) {
     if(headers == null) {
       headers = row.keySet();
     } else {
