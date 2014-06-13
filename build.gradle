@@ -7,3 +7,11 @@ version = '0.1.0-SNAPSHOT'
 
 sourceCompatibility = '1.6'
 
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  testCompile "junit:junit:4.11"
+  testCompile "org.clojure:clojure:1.6.0"
+}
