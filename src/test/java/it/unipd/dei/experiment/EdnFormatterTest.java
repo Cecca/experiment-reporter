@@ -65,4 +65,22 @@ public class EdnFormatterTest {
     assertEquals(note.nth(1), "This is a test note");
   }
 
+  @Test
+  public void testEdnTags() {
+    Experiment exp =
+      new Experiment("exp-class", "exp-name")
+        .tag("tag1", "value 1")
+        .tag("tag2", 1234L);
+
+    String edn = EdnFormatter.format(exp);
+    Object parsed = RT.readString(edn);
+
+    IPersistentMap expMap = (IPersistentMap) parsed;
+    IPersistentMap tags = (IPersistentMap) expMap.valAt(TAGS);
+
+    assertThat(tags.count(), is(2));
+    assertEquals(tags.valAt("tag1"), "value 1");
+    assertEquals(tags.valAt("tag2"), 1234L);
+  }
+
 }
