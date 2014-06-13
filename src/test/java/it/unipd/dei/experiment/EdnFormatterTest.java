@@ -83,4 +83,41 @@ public class EdnFormatterTest {
     assertEquals(tags.valAt("tag2"), 1234L);
   }
 
+  @Test
+  public void testEdnTables() {
+    Experiment exp =
+      new Experiment("exp-class", "exp-name")
+        .append("table1",
+          "head1", "val1",
+          "head2", "val2")
+        .append("table1",
+          "head1", "anotherVal",
+          "head2", "anotherVal2")
+        .append("table2",
+          "head1", "val1",
+          "head2", "val2");
+
+    String edn = EdnFormatter.format(exp);
+    Object parsed = RT.readString(edn);
+
+    IPersistentMap expMap = (IPersistentMap) parsed;
+    IPersistentMap tables = (IPersistentMap) expMap.valAt(TABLES);
+
+    assertThat(tables.count(), is(2));
+    assertThat(tables.valAt("table1"), is(instanceOf(IPersistentVector.class)));
+    assertThat(tables.valAt("table2"), is(instanceOf(IPersistentVector.class)));
+
+    IPersistentVector table1 = (IPersistentVector) tables.valAt("table1");
+    assertThat(table1.count(), is(2));
+    assertEquals(((IPersistentMap) table1.nth(0)).valAt("head1"), "val1");
+    assertEquals(((IPersistentMap) table1.nth(0)).valAt("head2"), "val2");
+    assertEquals(((IPersistentMap) table1.nth(1)).valAt("head1"), "anotherVal");
+    assertEquals(((IPersistentMap) table1.nth(1)).valAt("head2"), "anotherVal2");
+
+    IPersistentVector table2 = (IPersistentVector) tables.valAt("table2");
+    assertThat(table2.count(), is(1));
+    assertEquals(((IPersistentMap) table2.nth(0)).valAt("head1"), "val1");
+    assertEquals(((IPersistentMap) table2.nth(0)).valAt("head2"), "val2");
+  }
+
 }
