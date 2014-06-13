@@ -68,7 +68,7 @@ public class Experiment {
     return this;
   }
 
-  public Experiment appendMap(String tableName, Map<String, Object> row) {
+  public Experiment append(String tableName, Map<String, Object> row) {
     if(!tables.containsKey(tableName)) {
       tables.put(tableName, new Table());
     }
