@@ -47,4 +47,22 @@ public class EdnFormatterTest {
     assertEquals(expMap.valAt(TABLES), PersistentArrayMap.EMPTY);
   }
 
+  @Test
+  public void testEdnNotes() {
+    Experiment exp = new Experiment("exp-class", "exp-name");
+    exp.note("This is a test note");
+
+    String edn = EdnFormatter.format(exp);
+    Object parsed = RT.readString(edn);
+
+    IPersistentMap expMap = (IPersistentMap) parsed;
+    IPersistentVector notes = (IPersistentVector) expMap.valAt(NOTES);
+
+    assertThat(notes.length(), is(1));
+    assertThat(notes.nth(0), is(instanceOf(IPersistentVector.class)));
+    IPersistentVector note = (IPersistentVector) notes.nth(0);
+    assertThat(note.length(), is(2));
+    assertEquals(note.nth(1), "This is a test note");
+  }
+
 }
