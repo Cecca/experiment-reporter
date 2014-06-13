@@ -21,7 +21,7 @@ import java.util.*;
 
 public class EdnFormatter {
 
-  private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+  private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
   public static String format(Experiment experiment) {
     return new EdnFormatter().statefulFormat(experiment);
@@ -127,7 +127,7 @@ public class EdnFormatter {
   }
 
   private String fmt(Date d) {
-    return "\"" + dateFormat.format(d) + "\"";
+    return "#inst \"" + dateFormat.format(d) + "\"";
   }
 
   private String fmt(Experiment.Note n) {
