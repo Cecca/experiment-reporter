@@ -21,6 +21,8 @@ import static org.junit.Assert.*;
 import clojure.lang.*;
 import org.junit.Test;
 
+import java.util.Date;
+
 public class EdnFormatterTest {
 
   public static final Keyword CLASS = Keyword.intern(null, "class");
@@ -45,6 +47,18 @@ public class EdnFormatterTest {
     assertEquals(expMap.valAt(NOTES), PersistentVector.EMPTY);
     assertEquals(expMap.valAt(TAGS), PersistentArrayMap.EMPTY);
     assertEquals(expMap.valAt(TABLES), PersistentArrayMap.EMPTY);
+  }
+
+  @Test
+  public void testEdnDate() {
+    Experiment exp = new Experiment("exp-class", "exp-name");
+    exp.note("This is a test note");
+
+    String edn = EdnFormatter.format(exp);
+    Object parsed = RT.readString(edn);
+
+    IPersistentMap expMap = (IPersistentMap) parsed;
+    assertThat(expMap.valAt(DATE), is(instanceOf(Date.class)));
   }
 
   @Test
