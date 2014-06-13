@@ -70,7 +70,7 @@ This will generate the following output on the console
 
     ==== name [experiment-category]  ====
 
-    Date 2014-06-13T21:57:30.113+0200
+    Date 2014-06-13T22:27:49.655+0200
 
     ---- Tags ----
 
@@ -83,37 +83,37 @@ This will generate the following output on the console
 
     | parameter 1 | another parameter | first result | second result |
     |-------------+-------------------+--------------+---------------|
-    | 123         | value             | -841122125   | 1896525101    |
+    | 123         | value             | -1339574736  | 1418756299    |
 
     -- timing --
 
     | parameter 1 | another parameter | time | iteration |
     |-------------+-------------------+------+-----------|
-    | 123         | value             | 668  | 0         |
-    | 123         | value             | 834  | 1         |
-    | 123         | value             | 942  | 2         |
-    | 123         | value             | 317  | 3         |
-    | 123         | value             | 1800 | 4         |
+    | 123         | value             | 66   | 0         |
+    | 123         | value             | 103  | 1         |
+    | 123         | value             | 1517 | 2         |
+    | 123         | value             | 39   | 3         |
+    | 123         | value             | 278  | 4         |
 
 and, more importantly, the following [EDN](https://github.com/edn-format/edn) file
 
 ```clojure
-;; File name-2014-06-13T21:57:30.113+0200.edn
+;; File name-2014-06-13T22:27:49.655+0200.edn
 {:class "experiment-category",
  :name "name",
  :successful true,
- :date "2014-06-13T21:57:30.113+0200",
+ :date #inst "2014-06-13T22:27:49.000-00:00",
  :notes [],
  :tags {"another parameter" "value", "parameter 1" 123},
  :tables
  {"timing"
-  [{"time" 668, "iteration" 0}
-   {"time" 834, "iteration" 1}
-   {"time" 942, "iteration" 2}
-   {"time" 317, "iteration" 3}
-   {"time" 1800, "iteration" 4}],
+  [{"time" 66, "iteration" 0}
+   {"time" 103, "iteration" 1}
+   {"time" 1517, "iteration" 2}
+   {"time" 39, "iteration" 3}
+   {"time" 278, "iteration" 4}],
   "main-result"
-  [{"second result" 1896525101, "first result" -841122125}]}}
+  [{"second result" 1418756299, "first result" -1339574736}]}}
 ```
 
 that is suitable to be loaded in a Clojure REPL for further processing,
