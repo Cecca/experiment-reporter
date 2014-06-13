@@ -20,7 +20,7 @@ experiment in an `Experiment` object that will take care of exporting it
 in various formats.
 
 The library is written in pure Java with no dependencies, hence it can be used
-in project written in any JVM language with Java interoperability
+in projects written in any JVM language with Java interoperability
 (Java, Clojure, Scala...).
 
 At a glance
