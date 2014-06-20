@@ -38,7 +38,7 @@ public class OrgFileFormatter {
     StringBuffer sb = new StringBuffer();
     sb.append("* ").append(experiment.getName())
       .append("  ").append(orgDateFormat.format(experiment.getDate()))
-      .append("      ").append(":").append(experiment.getExperimentClass()).append(":")
+      .append("      ").append(":").append(experiment.getCategory()).append(":")
       .append("\n");
     return sb.toString();
   }
