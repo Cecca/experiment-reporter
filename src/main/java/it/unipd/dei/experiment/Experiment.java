@@ -23,6 +23,30 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * Main entry point to the library. Representation of a generic experiment.
+ * An experiment has several information associated:
+ * <ul>
+ *   <li>Category</li>
+ *   <li>Date</li>
+ *   <li>Name</li>
+ *   <li>"Successful" boolean flag</li>
+ *   <li>A list of notes, tagged with the date they were created</li>
+ *   <li>A list of tags, representing experiment configuration, version of the software used
+ *       and so on</li>
+ *   <li>A list of tables, containing the actual experimental results.</li>
+ * </ul>
+ *
+ * Several operations can be performed on Experiment objects:
+ * <ul>
+ *   <li>Add notes and tags: {@link #note(String)}, {@link #tag(String, Object)}</li>
+ *   <li>Mark the experiment as failed: {@link #failed()}</li>
+ *   <li>Append rows to tables: {@link #append(String, Object...)}
+ *                              and {@link #append(String, java.util.Map)}</li>
+ *   <li>Save as Ork-mode files: {@link #saveAsOrgFile()}</li>
+ *   <li>Save as EDN files: {@link #saveAsEdnFile()}</li>
+ * </ul>
+ */
 public class Experiment {
 
   private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
@@ -35,6 +59,11 @@ public class Experiment {
   private Map<String, Object> tags;
   private Map<String,Table> tables;
 
+  /**
+   * Create a new experiment with the given name and assigned to the given category.
+   * @param category the category of the experiment
+   * @param name the name of the experiment
+   */
   public Experiment(String category, String name) {
     this.category = category;
     this.name = name;
@@ -45,21 +74,61 @@ public class Experiment {
     tables = new HashMap<String, Table>();
   }
 
+  /**
+   * Marks the experiment as failed.
+   * @return a reference to {@code this} for method chaining
+   */
   public Experiment failed() {
     this.successful = true;
     return this;
   }
 
+  /**
+   * Adds a tag to this experiment.
+   * @param name the name of the tag
+   * @param value the value of the tag
+   * @return a reference to {@code this} for method chaining
+   */
   public Experiment tag(String name, Object value) {
     tags.put(name, value);
     return this;
   }
 
+  /**
+   * Adds a note to the experiment. A note can be any string. A typical use case is
+   * to record an exception.
+   * @param message the message of the note
+   * @return a reference to {@code this} for method chaining
+   */
   public Experiment note(String message) {
     notes.add(new Note(new Date(), message));
     return this;
   }
 
+  /**
+   * Append a row to the given table. If the table does not exist, create it.
+   * Rows are specified as a varargs array, that is you can specify column names
+   * and associated values separated by commas.
+   *
+   * <pre><code>
+   *   experiment.append("tableName",
+   *     "column1", value1,
+   *     "column3", value3,
+   *     "column2", value2);
+   * </code></pre>
+   *
+   * Is equivalent to appending the following row to table {@code "tableName"}
+   *
+   * <pre><code>
+   *   | column1 | column2 | column3 |
+   *   |---------+---------+---------|
+   *   | value1  | value2  | value3  |
+   * </code></pre>
+   *
+   * @param tableName the name of the table to which add the row.
+   * @param rowElements the elements of the row, as a varargs array
+   * @return a reference to {@code this} for method chaining
+   */
   public Experiment append(String tableName, Object... rowElements) {
     if(!tables.containsKey(tableName)) {
       tables.put(tableName, new Table());
@@ -68,6 +137,13 @@ public class Experiment {
     return this;
   }
 
+  /**
+   * Like {@link #append(String, Object...)}, with a Map representing the row to
+   * be appended instead of a varargs array.
+   * @param tableName the name of the table to which add the row.
+   * @param row the elements of the row, as Map.
+   * @return a reference to {@code this} for method chaining
+   */
   public Experiment append(String tableName, Map<String, Object> row) {
     if(!tables.containsKey(tableName)) {
       tables.put(tableName, new Table());
@@ -76,6 +152,10 @@ public class Experiment {
     return this;
   }
 
+  /**
+   * Simple string representation of the experiment.
+   * @return a simple string representation.
+   */
   public String toSimpleString() {
     StringBuffer sb = new StringBuffer();
     sb.append("==== ").append(name)
@@ -133,10 +213,25 @@ public class Experiment {
     return successful;
   }
 
+  /**
+   * Saves the experiment as a  <a href="http://orgmode.org/">Org-mode</a> file.
+   *
+   * The file is saved in the current working directory or in the directory specified
+   * by the system property {@code experiments.report.dir}.
+   *
+   * @throws FileNotFoundException
+   */
   public void saveAsOrgFile() throws FileNotFoundException {
     this.saveAsOrgFile(System.getProperty("experiments.report.dir", "."));
   }
 
+  /**
+   * Saves the experiment as a  <a href="http://orgmode.org/">Org-mode</a> file.
+   *
+   * The file is saved in the given directory.
+   *
+   * @throws FileNotFoundException
+   */
   public void saveAsOrgFile(String directory) throws FileNotFoundException {
     File dir = new File(directory);
     if(!dir.exists() && !dir.mkdir()) {
@@ -149,10 +244,25 @@ public class Experiment {
     out.close();
   }
 
+  /**
+   * Saves the experiment as a  <a href="https://github.com/edn-format/edn">EDN</a> file.
+   *
+   * The file is saved in the current working directory or in the directory specified
+   * by the system property {@code experiments.report.dir}.
+   *
+   * @throws FileNotFoundException
+   */
   public void saveAsEdnFile() throws FileNotFoundException {
     this.saveAsEdnFile(System.getProperty("experiments.report.dir", "."));
   }
 
+  /**
+   * Saves the experiment as a  <a href="https://github.com/edn-format/edn">EDN</a> file.
+   *
+   * The file is saved in the given directory.
+   *
+   * @throws FileNotFoundException
+   */
   public void saveAsEdnFile(String directory) throws FileNotFoundException {
     File dir = new File(directory);
     if(!dir.exists() && !dir.mkdir()) {
