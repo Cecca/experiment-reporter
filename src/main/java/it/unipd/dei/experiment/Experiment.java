@@ -27,7 +27,7 @@ public class Experiment {
 
   private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
-  private String experimentClass;
+  private String category;
   private Date date;
   private String name;
   private boolean successful;
@@ -35,8 +35,8 @@ public class Experiment {
   private Map<String, Object> tags;
   private Map<String,Table> tables;
 
-  public Experiment(String experimentClass, String name) {
-    this.experimentClass = experimentClass;
+  public Experiment(String category, String name) {
+    this.category = category;
     this.name = name;
     this.successful = true;
     this.date = new Date();
@@ -79,7 +79,7 @@ public class Experiment {
   public String toSimpleString() {
     StringBuffer sb = new StringBuffer();
     sb.append("==== ").append(name)
-      .append(" [").append(experimentClass).append("] ")
+      .append(" [").append(category).append("] ")
       .append(" ====\n\n");
     sb.append("Date ").append(dateFormat.format(date)).append("\n\n");
     sb.append("---- Tags ----\n\n");
@@ -97,7 +97,7 @@ public class Experiment {
 
   @Override
   public String toString() {
-    return "Experiment{class = " + experimentClass +
+    return "Experiment{category = " + category +
         ", name" + name + ", " + dateFormat.format(date) + "}";
   }
 
@@ -105,8 +105,8 @@ public class Experiment {
     return dateFormat;
   }
 
-  protected String getExperimentClass() {
-    return experimentClass;
+  protected String getCategory() {
+    return category;
   }
 
   protected String getName() {
@@ -175,33 +175,4 @@ public class Experiment {
     }
   }
 
-
-  public static void main(String[] args) throws FileNotFoundException {
-    Experiment exp = new Experiment("matrix-multiplication", "Test");
-
-    exp.note("This is a test experiment");
-
-    exp.tag("replication", 8)
-      .tag("localMemory", 2)
-      .tag("dimension", 16);
-
-    exp.append("rounds",
-      "round", 0,
-      "time", 119823)
-      .append("rounds",
-        "round", 1,
-        "time", 123876);
-
-    exp.note("You can add notes at any time");
-
-    exp.append("radius",
-      "radius", 2,
-      "count", 10)
-      .append("radius",
-        "radius", 3,
-        "count", 67);
-
-    exp.saveAsEdnFile();
-
-  }
 }

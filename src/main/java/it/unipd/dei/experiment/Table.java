@@ -162,19 +162,4 @@ public class Table {
     return sb.toString();
   }
 
-  public static void main(String[] args) {
-    Table table = new Table()
-      .addRow(
-        "name", "matteo",
-        "surname", "ceccarello",
-        "age", 25)
-      .addRow(
-        "name", "mario",
-        "surname", "rossi",
-        "age", 32);
-
-    System.out.println(table.asOrgTable());
-    System.out.println(table.asOrgTable("name", "surname", "age"));
-  }
-
 }

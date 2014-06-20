@@ -99,7 +99,7 @@ and, more importantly, the following [EDN](https://github.com/edn-format/edn) fi
 
 ```clojure
 ;; File name-2014-06-13T22:27:49.655+0200.edn
-{:class "experiment-category",
+{:category "experiment-category",
  :name "name",
  :successful true,
  :date #inst "2014-06-13T22:27:49.000-00:00",

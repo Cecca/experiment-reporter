@@ -30,7 +30,7 @@ public class EdnFormatter {
   private String statefulFormat(Experiment experiment) {
     StringBuffer sb = new StringBuffer();
     sb.append("{");
-    sb.append(formatClass(experiment)).append(" ");
+    sb.append(formatCategory(experiment)).append(" ");
     sb.append(" ").append(formatName(experiment)).append(" ");
     sb.append(" ").append(formatSuccess(experiment)).append(" ");
     sb.append(" ").append(formatDate(experiment)).append(" ");
@@ -41,8 +41,8 @@ public class EdnFormatter {
     return sb.toString();
   }
 
-  private String formatClass(Experiment exp) {
-    return keyword("class") + " " + fmt(exp.getExperimentClass());
+  private String formatCategory(Experiment exp) {
+    return keyword("category") + " " + fmt(exp.getCategory());
   }
 
   private String formatName(Experiment exp) {
