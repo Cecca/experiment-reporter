@@ -25,7 +25,7 @@ import java.util.Date;
 
 public class EdnFormatterTest {
 
-  public static final Keyword CLASS = Keyword.intern(null, "class");
+  public static final Keyword CLASS = Keyword.intern(null, "category");
   public static final Keyword NAME = Keyword.intern(null, "name");
   public static final Keyword DATE = Keyword.intern(null, "date");
   public static final Keyword NOTES = Keyword.intern(null, "notes");
