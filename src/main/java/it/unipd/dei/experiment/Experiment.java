@@ -175,33 +175,4 @@ public class Experiment {
     }
   }
 
-
-  public static void main(String[] args) throws FileNotFoundException {
-    Experiment exp = new Experiment("matrix-multiplication", "Test");
-
-    exp.note("This is a test experiment");
-
-    exp.tag("replication", 8)
-      .tag("localMemory", 2)
-      .tag("dimension", 16);
-
-    exp.append("rounds",
-      "round", 0,
-      "time", 119823)
-      .append("rounds",
-        "round", 1,
-        "time", 123876);
-
-    exp.note("You can add notes at any time");
-
-    exp.append("radius",
-      "radius", 2,
-      "count", 10)
-      .append("radius",
-        "radius", 3,
-        "count", 67);
-
-    exp.saveAsEdnFile();
-
-  }
 }
