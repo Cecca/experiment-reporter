@@ -222,7 +222,7 @@ public class Experiment {
    * @throws FileNotFoundException
    */
   public void saveAsOrgFile() throws FileNotFoundException {
-    this.saveAsOrgFile(System.getProperty("experiments.report.dir", "."));
+    this.saveAsOrgFile(System.getProperty("experiments.report.dir", "./reports"));
   }
 
   /**
@@ -253,7 +253,7 @@ public class Experiment {
    * @throws FileNotFoundException
    */
   public void saveAsEdnFile() throws FileNotFoundException {
-    this.saveAsEdnFile(System.getProperty("experiments.report.dir", "."));
+    this.saveAsEdnFile(System.getProperty("experiments.report.dir", "./reports"));
   }
 
   /**
