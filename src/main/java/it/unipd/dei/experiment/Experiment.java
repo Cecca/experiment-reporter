@@ -233,8 +233,8 @@ public class Experiment {
    * @throws FileNotFoundException
    */
   public void saveAsOrgFile(String directory) throws FileNotFoundException {
-    File dir = new File(category, directory);
-    if(!dir.exists() && !dir.mkdir()) {
+    File dir = new File(directory, category);
+    if(!dir.exists() && !dir.mkdirs()) {
       throw new RuntimeException("Cannot create " + directory + "directory");
     }
     String fileName = name + "-" + dateFormat.format(date) + ".org";
@@ -264,8 +264,8 @@ public class Experiment {
    * @throws FileNotFoundException
    */
   public void saveAsEdnFile(String directory) throws FileNotFoundException {
-    File dir = new File(category, directory);
-    if(!dir.exists() && !dir.mkdir()) {
+    File dir = new File(directory, category);
+    if(!dir.exists() && !dir.mkdirs()) {
       throw new RuntimeException("Cannot create " + directory + "directory");
     }
     String fileName = name + "-" + dateFormat.format(date) + ".edn";
