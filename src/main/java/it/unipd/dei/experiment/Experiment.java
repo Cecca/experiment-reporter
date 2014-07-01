@@ -233,7 +233,7 @@ public class Experiment {
    * @throws FileNotFoundException
    */
   public void saveAsOrgFile(String directory) throws FileNotFoundException {
-    File dir = new File(directory);
+    File dir = new File(category, directory);
     if(!dir.exists() && !dir.mkdir()) {
       throw new RuntimeException("Cannot create " + directory + "directory");
     }
@@ -245,7 +245,7 @@ public class Experiment {
   }
 
   /**
-   * Saves the experiment as a  <a href="https://github.com/edn-format/edn">EDN</a> file.
+   * Saves the experiment as a <a href="https://github.com/edn-format/edn">EDN</a> file.
    *
    * The file is saved in the current working directory or in the directory specified
    * by the system property {@code experiments.report.dir}.
@@ -257,14 +257,14 @@ public class Experiment {
   }
 
   /**
-   * Saves the experiment as a  <a href="https://github.com/edn-format/edn">EDN</a> file.
+   * Saves the experiment as a <a href="https://github.com/edn-format/edn">EDN</a> file.
    *
    * The file is saved in the given directory.
    *
    * @throws FileNotFoundException
    */
   public void saveAsEdnFile(String directory) throws FileNotFoundException {
-    File dir = new File(directory);
+    File dir = new File(category, directory);
     if(!dir.exists() && !dir.mkdir()) {
       throw new RuntimeException("Cannot create " + directory + "directory");
     }
