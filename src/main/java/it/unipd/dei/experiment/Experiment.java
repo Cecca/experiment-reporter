@@ -15,10 +15,11 @@
 
 package it.unipd.dei.experiment;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
+import javax.xml.bind.DatatypeConverter;
+import java.io.*;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -72,6 +73,21 @@ public class Experiment {
     notes = new LinkedList<Note>();
     tags = new HashMap<String, Object>();
     tables = new HashMap<String, Table>();
+  }
+
+  /**
+   * Returns a sha256 hash uniquely identifying this experiment
+   */
+  public String sha256() {
+    try {
+      MessageDigest sha = MessageDigest.getInstance("SHA-256");
+      byte[] hash = sha.digest(this.toSimpleString().getBytes("UTF-16"));
+      return DatatypeConverter.printHexBinary(hash);
+    } catch (NoSuchAlgorithmException e) {
+      throw new Error(e);
+    } catch (UnsupportedEncodingException e) {
+      throw new Error(e);
+    }
   }
 
   /**
