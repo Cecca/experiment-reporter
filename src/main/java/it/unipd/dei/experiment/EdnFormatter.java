@@ -32,6 +32,7 @@ public class EdnFormatter {
     sb.append("{");
     sb.append(formatCategory(experiment)).append(" ");
     sb.append(" ").append(formatName(experiment)).append(" ");
+    sb.append(" ").append(formatSha(experiment)).append(" ");
     sb.append(" ").append(formatSuccess(experiment)).append(" ");
     sb.append(" ").append(formatDate(experiment)).append(" ");
     sb.append(" ").append(formatNotes(experiment)).append(" ");
@@ -47,6 +48,10 @@ public class EdnFormatter {
 
   private String formatName(Experiment exp) {
     return keyword("name") + " " + fmt(exp.getName());
+  }
+
+  private String formatSha(Experiment exp) {
+    return keyword("id") + " " + fmt(exp.sha256());
   }
 
   private String formatSuccess(Experiment exp) {
