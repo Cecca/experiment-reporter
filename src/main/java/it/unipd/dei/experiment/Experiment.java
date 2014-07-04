@@ -17,7 +17,6 @@ package it.unipd.dei.experiment;
 
 import javax.xml.bind.DatatypeConverter;
 import java.io.*;
-import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
@@ -229,6 +228,20 @@ public class Experiment {
     return successful;
   }
 
+  private File getOutDir(String directory) {
+    File catDir = new File(directory, category);
+    File dir = new File(catDir, name);
+    if(!dir.exists() && !dir.mkdirs()) {
+      throw new RuntimeException("Cannot create " + directory + "directory");
+    }
+    return dir;
+  }
+
+  private File getOutFile(File dir, String extension) {
+    String fileName = dateFormat.format(date) + "-" + sha256() + extension;
+    return new File(dir, fileName);
+  }
+
   /**
    * Saves the experiment as a  <a href="http://orgmode.org/">Org-mode</a> file.
    *
@@ -249,12 +262,8 @@ public class Experiment {
    * @throws FileNotFoundException
    */
   public void saveAsOrgFile(String directory) throws FileNotFoundException {
-    File dir = new File(directory, category);
-    if(!dir.exists() && !dir.mkdirs()) {
-      throw new RuntimeException("Cannot create " + directory + "directory");
-    }
-    String fileName = name + "-" + dateFormat.format(date) + ".org";
-    File outFile = new File(dir, fileName.replace(" ", "_"));
+    File dir = getOutDir(directory);
+    File outFile = getOutFile(dir, ".org");
     PrintWriter out = new PrintWriter(new FileOutputStream(outFile));
     out.write(OrgFileFormatter.format(this));
     out.close();
@@ -280,12 +289,8 @@ public class Experiment {
    * @throws FileNotFoundException
    */
   public void saveAsEdnFile(String directory) throws FileNotFoundException {
-    File dir = new File(directory, category);
-    if(!dir.exists() && !dir.mkdirs()) {
-      throw new RuntimeException("Cannot create " + directory + "directory");
-    }
-    String fileName = name + "-" + dateFormat.format(date) + ".edn";
-    File outFile = new File(dir, fileName.replace(" ", "_"));
+    File dir = getOutDir(directory);
+    File outFile = getOutFile(dir, ".edn");
     PrintWriter out = new PrintWriter(new FileOutputStream(outFile));
     out.write(EdnFormatter.format(this));
     out.close();
