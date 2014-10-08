@@ -12,6 +12,9 @@ repositories {
 }
 
 dependencies {
+
+  compile "joda-time:joda-time:2.5"
+
   testCompile "junit:junit:4.11"
   testCompile "org.clojure:clojure:1.6.0"
 }
