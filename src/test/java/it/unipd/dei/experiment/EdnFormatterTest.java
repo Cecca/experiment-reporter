@@ -15,13 +15,15 @@
 
 package it.unipd.dei.experiment;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
-
 import clojure.lang.*;
 import org.junit.Test;
 
 import java.util.Date;
+
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 public class EdnFormatterTest {
 

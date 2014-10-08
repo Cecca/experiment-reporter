@@ -19,7 +19,7 @@ the experimental process. The application will store the results of the
 experiment in an `Experiment` object that will take care of exporting it
 in various formats.
 
-The library is written in pure Java with no dependencies, hence it can be used
+The library is written in pure Java, hence it can be used
 in projects written in any JVM language with Java interoperability
 (Java, Clojure, Scala...).
 

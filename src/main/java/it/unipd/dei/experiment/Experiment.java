@@ -15,13 +15,18 @@
 
 package it.unipd.dei.experiment;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
+
 import javax.xml.bind.DatatypeConverter;
 import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Main entry point to the library. Representation of a generic experiment.
@@ -49,10 +54,10 @@ import java.util.*;
  */
 public class Experiment {
 
-  private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+  private static DateTimeFormatter dateFormatter = ISODateTimeFormat.dateTime();
 
   private String category;
-  private Date date;
+  private DateTime date;
   private String name;
   private boolean successful;
   private List<Note> notes;
@@ -68,7 +73,7 @@ public class Experiment {
     this.category = category;
     this.name = name;
     this.successful = true;
-    this.date = new Date();
+    this.date = DateTime.now();
     notes = new LinkedList<Note>();
     tags = new HashMap<String, Object>();
     tables = new HashMap<String, Table>();
@@ -116,7 +121,7 @@ public class Experiment {
    * @return a reference to {@code this} for method chaining
    */
   public Experiment note(String message) {
-    notes.add(new Note(new Date(), message));
+    notes.add(new Note(DateTime.now(), message));
     return this;
   }
 
@@ -176,7 +181,7 @@ public class Experiment {
     sb.append("==== ").append(name)
       .append(" [").append(category).append("] ")
       .append(" ====\n\n");
-    sb.append("Date ").append(dateFormat.format(date)).append("\n\n");
+    sb.append("Date ").append(dateFormatter.print(date)).append("\n\n");
     sb.append("---- Tags ----\n\n");
     for(Map.Entry<String, Object> t : tags.entrySet()) {
       sb.append("    ").append(t.getKey())
@@ -193,11 +198,7 @@ public class Experiment {
   @Override
   public String toString() {
     return "Experiment{category = " + category +
-        ", name" + name + ", " + dateFormat.format(date) + "}";
-  }
-
-  protected DateFormat getDateFormat() {
-    return dateFormat;
+        ", name" + name + ", " + dateFormatter.print(date) + "}";
   }
 
   protected String getCategory() {
@@ -208,7 +209,7 @@ public class Experiment {
     return name;
   }
 
-  protected Date getDate() {
+  protected DateTime getDate() {
     return date;
   }
 
@@ -238,7 +239,7 @@ public class Experiment {
   }
 
   private File getOutFile(File dir, String extension) {
-    String fileName = dateFormat.format(date) + "-" + sha256() + extension;
+    String fileName = dateFormatter.print(date) + "-" + sha256() + extension;
     return new File(dir, fileName);
   }
 
@@ -297,10 +298,10 @@ public class Experiment {
   }
 
   protected static class Note {
-    protected Date date;
+    protected DateTime date;
     protected String message;
 
-    public Note(Date date, String message) {
+    public Note(DateTime date, String message) {
       this.date = date;
       this.message = message;
     }
