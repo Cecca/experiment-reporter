@@ -15,13 +15,14 @@
 
 package it.unipd.dei.experiment;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.util.Map;
 
 public class OrgFileFormatter {
 
-  public static DateFormat orgDateFormat = new SimpleDateFormat("[yyyy-MM-dd EEE HH:mm]");
+  public static DateTimeFormatter orgDateFormat = DateTimeFormat.forPattern("[yyyy-MM-dd EEE HH:mm]");
 
   public static String format(Experiment experiment) {
     StringBuffer sb = new StringBuffer();
@@ -37,7 +38,7 @@ public class OrgFileFormatter {
   private static String headline(Experiment experiment) {
     StringBuffer sb = new StringBuffer();
     sb.append("* ").append(experiment.getName())
-      .append("  ").append(orgDateFormat.format(experiment.getDate()))
+      .append("  ").append(orgDateFormat.print(experiment.getDate()))
       .append("      ").append(":").append(experiment.getCategory()).append(":")
       .append("\n");
     return sb.toString();
@@ -47,7 +48,7 @@ public class OrgFileFormatter {
     StringBuffer sb = new StringBuffer();
     for(Experiment.Note note : experiment.getNotes()) {
       sb.append("  - ")
-        .append(orgDateFormat.format(note.date)).append("  ")
+        .append(orgDateFormat.print(note.date)).append("  ")
         .append(note.message).append("\n");
     }
     return sb.toString();

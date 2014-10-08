@@ -55,6 +55,7 @@ public class Example {
     // report to console and to an EDN file
     System.out.println(experiment.toSimpleString());
     experiment.saveAsEdnFile();
+    experiment.saveAsOrgFile();
   }
 
 }

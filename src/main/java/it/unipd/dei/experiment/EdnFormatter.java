@@ -15,13 +15,17 @@
 
 package it.unipd.dei.experiment;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class EdnFormatter {
 
-  private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+  private static DateTimeFormatter dateFormatter = ISODateTimeFormat.dateTime();
 
   public static String format(Experiment experiment) {
     return new EdnFormatter().statefulFormat(experiment);
@@ -131,8 +135,8 @@ public class EdnFormatter {
     return "\"" + s + "\"";
   }
 
-  private String fmt(Date d) {
-    return "#inst \"" + dateFormat.format(d) + "\"";
+  private String fmt(DateTime d) {
+    return "#inst \"" + dateFormatter.print(d) + "\"";
   }
 
   private String fmt(Experiment.Note n) {
