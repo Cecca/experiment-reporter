@@ -56,6 +56,7 @@ public class Example {
     System.out.println(experiment.toSimpleString());
     experiment.saveAsEdnFile();
     experiment.saveAsOrgFile();
+    experiment.saveAsJsonFile(true);
   }
 
 }

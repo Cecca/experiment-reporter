@@ -299,6 +299,64 @@ public class Experiment {
     out.close();
   }
 
+  /**
+   * Saves the experiment as a JSON file.
+   *
+   * The file is saved in the current working directory or in the directory specified
+   * by the system property {@code experiments.report.dir}.
+   *
+   * The system property `experiment.json.pretty` controls the pretty printing of the output.
+   *
+   * @throws FileNotFoundException
+   */
+  public void saveAsJsonFile() throws FileNotFoundException {
+    this.saveAsJsonFile(
+            System.getProperty("experiments.report.dir", "./reports"),
+            Boolean.parseBoolean(System.getProperty("experiment.json.pretty", "false")));
+  }
+
+  /**
+   * Saves the experiment as a JSON file. Has the control over the pretty printing
+   *
+   * The file is saved in the current working directory or in the directory specified
+   * by the system property {@code experiments.report.dir}.
+   *
+   * The system property `experiment.json.pretty` controls the pretty printing of the output.
+   *
+   * @throws FileNotFoundException
+   */
+  public void saveAsJsonFile(String directory) throws FileNotFoundException {
+    this.saveAsJsonFile(directory,
+            Boolean.parseBoolean(System.getProperty("experiment.json.pretty", "false")));
+  }
+
+  /**
+   * Saves the experiment as a JSON file. Has the control over the pretty printing.
+   *
+   * The file is saved in the current working directory or in the directory specified
+   * by the system property {@code experiments.report.dir}.
+   *
+   * @throws FileNotFoundException
+   */
+  public void saveAsJsonFile(boolean pretty) throws FileNotFoundException {
+    this.saveAsJsonFile(System.getProperty("experiments.report.dir", "./reports"), pretty);
+  }
+
+  /**
+   * Saves the experiment as a JSON file.
+   *
+   * The file is saved in the given directory.
+   *
+   * @throws FileNotFoundException
+   */
+  public void saveAsJsonFile(String directory, boolean pretty) throws FileNotFoundException {
+    File dir = getOutDir(directory);
+    File outFile = getOutFile(dir, ".json");
+    PrintWriter out = new PrintWriter(new FileOutputStream(outFile));
+    out.write(JsonFormatter.format(this, pretty));
+    out.close();
+  }
+
   protected static class Note {
     protected DateTime date;
     protected String message;
