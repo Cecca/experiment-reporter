@@ -192,7 +192,7 @@ public class Experiment {
     sb.append("\n---- Tables ----\n\n");
     for(Map.Entry<String, Table> t : tables.entrySet()) {
       sb.append("-- ").append(t.getKey()).append(" --\n\n")
-       .append(t.getValue().asOrgTable(tags)).append('\n');
+       .append(t.getValue().asOrgTable()).append('\n');
     }
     return sb.toString();
   }
