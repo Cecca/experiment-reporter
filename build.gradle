@@ -1,11 +1,23 @@
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'maven'
+apply plugin: 'signing'
 
 group = 'it.unipd.dei'
+archivesBaseName = 'experiment-reporter'
 version = '0.1.0-SNAPSHOT'
 
 sourceCompatibility = '1.6'
+
+// Conditional signing
+// ===================
+//
+// By setting the environment variable DEPLOYING to something
+// different than `false`, signing is enabled. By leaving it unset,
+// signing is skipped, allowing simple continuous integration on
+// travis-ci.
+
+def shouldSign = System. getenv ("DEPLOYING") != null && System. getenv ("DEPLOYING") != "false"
 
 repositories {
   mavenCentral()
@@ -18,4 +30,25 @@ dependencies {
 
   testCompile "junit:junit:4.11"
   testCompile "org.clojure:clojure:1.6.0"
+
+}
+
+// Jar Files
+// =========
+
+task javadocJar(type: Jar) {
+  classifier = 'javadoc'
+  from javadoc
+}
+
+task sourcesJar(type: Jar) {
+  classifier = 'sources'
+  from sourceSets.main.allSource
+}
+
+// Artifacts configuration
+// =======================
+
+artifacts {
+  archives javadocJar, sourcesJar
 }
