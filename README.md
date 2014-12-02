@@ -129,9 +129,9 @@ Date 2014-12-02T10:28:18.434+01:00
 ```
 
  - a JSON file
-
+  
+  `File: reports/experiment-category/name/2014-12-02T10:28:18.434+01:00-20B50FC15CD87292576C9DD9BB322F2204DF995BD7192E7FDD177E34C81AED33.json`
 ```json
-// File: reports/experiment-category/name/2014-12-02T10:28:18.434+01:00-20B50FC15CD87292576C9DD9BB322F2204DF995BD7192E7FDD177E34C81AED33.json
 {
   "category": "experiment-category",
   "date": "2014-12-02T10:28:18.434+01:00",
