@@ -4,10 +4,6 @@ apply from: 'build.gradle'
 
 // Artifacts signing
 // =================
-//
-// Signing is enabled only when deploying to the maven repository,
-// otherwise it is skipped. This way we can do continuous integration
-// on Travis-ci.
 
 signing {
   sign configurations.archives
