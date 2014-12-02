@@ -1,8 +1,10 @@
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'maven'
+apply plugin: 'signing'
 
 group = 'it.unipd.dei'
+archivesBaseName = 'experiment-reporter'
 version = '0.1.0-SNAPSHOT'
 
 sourceCompatibility = '1.6'
@@ -18,4 +20,85 @@ dependencies {
 
   testCompile "junit:junit:4.11"
   testCompile "org.clojure:clojure:1.6.0"
+
+}
+
+// Jar Files
+// =========
+
+task javadocJar(type: Jar) {
+  classifier = 'javadoc'
+  from javadoc
+}
+
+task sourcesJar(type: Jar) {
+  classifier = 'sources'
+  from sourceSets.main.allSource
+}
+
+// Artifacts configuration
+// =======================
+
+artifacts {
+  archives javadocJar, sourcesJar
+}
+
+// Artifacts signing
+// =================
+//
+// Signing is enabled only when deploying to the maven repository,
+// otherwise it is skipped. This way we can do continuous integration
+// on Travis-ci.
+
+signing {
+  required { gradle.taskGraph.hasTask("uploadArchives") }
+  sign configurations.archives
+}
+
+// Artifact deployment
+// ===================
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+        authentication(userName: ossrhUsername, password: ossrhPassword)
+      }
+
+      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+        authentication(userName: ossrhUsername, password: ossrhPassword)
+      }
+
+      pom.project {
+        name 'Example Application'
+        packaging 'jar'
+        // optionally artifactId can be defined here
+        description 'A application used as an example on how to set up pushing  its components to the Central Repository.'
+        url 'http://www.example.com/example-application'
+
+        scm {
+          connection 'scm:svn:http://foo.googlecode.com/svn/trunk/'
+          developerConnection 'scm:svn:https://foo.googlecode.com/svn/trunk/'
+          url 'http://foo.googlecode.com/svn/trunk/'
+        }
+
+        licenses {
+          license {
+            name 'The Apache License, Version 2.0'
+            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+          }
+        }
+
+        developers {
+          developer {
+            id 'manfred'
+            name 'Manfred Moser'
+            email 'manfred@sonatype.com'
+          }
+        }
+      }
+    }
+  }
 }
