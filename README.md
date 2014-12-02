@@ -1,11 +1,9 @@
 experiment-reporter
 ===================
 
-[![Build Status](https://travis-ci.org/Cecca/experiment-reporter.png)](https://travis-ci.org/Cecca/experiment-reporter)
-
 A simple library to report experimental results.
 
-When doing research work, our programs usually produce lots of logs from which
+When doing research work, software usually produces lots of logs from which
 we have to extract the information we are interested into. This is usually
 accomplished with an ad-hoc combination of tools like `grep`, `awk` and the
 like or, worse, manually.
@@ -19,9 +17,9 @@ the experimental process. The application will store the results of the
 experiment in an `Experiment` object that will take care of exporting it
 in various formats.
 
-The library is written in pure Java, hence it can be used
-in projects written in any JVM language with Java interoperability
-(Java, Clojure, Scala...).
+The library is written Java, hence it can be used in projects written
+in any JVM language with Java interoperability (Java, Clojure,
+Scala, Groovy...).
 
 At a glance
 -----------
@@ -61,60 +59,145 @@ experiment.append("main-result",
   "first result", result1,
   "second result", result2);
 
-// report to console and to an EDN file
+// report to console
 System.out.println(experiment.toSimpleString());
+
+// report to an Emacs Org mode file
+experiment.saveAsOrgFile();
+
+// report to a pretty printed JSON file
+experiment.saveAsJsonFile(true);
+
+// report to an EDN file
 experiment.saveAsEdnFile();
 ```
 
-This will generate the following output on the console
+This will generate the following outputs
 
-    ==== name [experiment-category]  ====
+ - on the console
 
-    Date 2014-06-13T22:27:49.655+0200
+```
+==== name [experiment-category]  ====
 
-    ---- Tags ----
+Date 2014-12-02T10:28:18.434+01:00
 
-        parameter 1 : 123
-        another parameter : value
+---- Tags ----
 
-    ---- Tables ----
+    parameter 1 : 123
+    another parameter : value
 
-    -- main-result --
+---- Tables ----
 
-    | parameter 1 | another parameter | first result | second result |
-    |-------------+-------------------+--------------+---------------|
-    | 123         | value             | -1339574736  | 1418756299    |
+-- main-result --
 
-    -- timing --
+| first result | second result |
+|--------------+---------------|
+| -1820064361  | -109620807    |
 
-    | parameter 1 | another parameter | time | iteration |
-    |-------------+-------------------+------+-----------|
-    | 123         | value             | 66   | 0         |
-    | 123         | value             | 103  | 1         |
-    | 123         | value             | 1517 | 2         |
-    | 123         | value             | 39   | 3         |
-    | 123         | value             | 278  | 4         |
+-- timing --
 
-and, more importantly, the following [EDN](https://github.com/edn-format/edn) file
-
-```clojure
-;; File name-2014-06-13T22:27:49.655+0200.edn
-{:category "experiment-category",
- :name "name",
- :successful true,
- :date #inst "2014-06-13T22:27:49.000-00:00",
- :notes [],
- :tags {"another parameter" "value", "parameter 1" 123},
- :tables
- {"timing"
-  [{"time" 66, "iteration" 0}
-   {"time" 103, "iteration" 1}
-   {"time" 1517, "iteration" 2}
-   {"time" 39, "iteration" 3}
-   {"time" 278, "iteration" 4}],
-  "main-result"
-  [{"second result" 1418756299, "first result" -1339574736}]}}
+| time | iteration |
+|------+-----------|
+| 756  | 0         |
+| 151  | 1         |
+| 169  | 2         |
+| 1189 | 3         |
+| 965  | 4         |
 ```
 
-that is suitable to be loaded in a Clojure REPL for further processing,
-for instance with [Incanter](http://incanter.org/).
+ - an Emacs Org mode file
+
+```org-mode
+* name  [2014-12-02 mar 10:28]      :experiment-category:
+** Tags
+   - parameter 1 : 123
+   - another parameter : value
+** Tables
+*** main-result
+| first result | second result |
+|--------------+---------------|
+| -1820064361  | -109620807    |
+
+*** timing
+| time | iteration |
+|------+-----------|
+| 756  | 0         |
+| 151  | 1         |
+| 169  | 2         |
+| 1189 | 3         |
+| 965  | 4         |
+```
+
+ - a JSON file
+  
+  `File: reports/experiment-category/name/2014-12-02T10:28:18.434+01:00-20B50FC15CD87292576C9DD9BB322F2204DF995BD7192E7FDD177E34C81AED33.json`
+```json
+{
+  "category": "experiment-category",
+  "date": "2014-12-02T10:28:18.434+01:00",
+  "name": "name",
+  "successful": true,
+  "notes": [],
+  "tags": {
+    "parameter 1": 123,
+    "another parameter": "value"
+  },
+  "tables": {
+    "main-result": [
+      {
+        "first result": -1820064361,
+        "second result": -109620807
+      }
+    ],
+    "timing": [
+      {
+        "time": 756,
+        "iteration": 0
+      },
+      {
+        "time": 151,
+        "iteration": 1
+      },
+      {
+        "time": 169,
+        "iteration": 2
+      },
+      {
+        "time": 1189,
+        "iteration": 3
+      },
+      {
+        "time": 965,
+        "iteration": 4
+      }
+    ]
+  }
+}
+```
+
+ - an [EDN](https://github.com/edn-format/edn) file
+
+```clojure
+;; File: reports/experiment-category-name/2014-12-02T10:28:18.434+01:00-20B50FC15CD87292576C9DD9BB322F2204DF995BD7192E7FDD177E34C81AED33.edn
+{:category "experiment-category"
+ :name "name"
+ :id "20B50FC15CD87292576C9DD9BB322F2204DF995BD7192E7FDD177E34C81AED33"
+ :successful true
+ :date #inst "2014-12-02T10:28:18.434+01:00"
+ :notes []
+ :tags {"parameter 1" 123 "another parameter" "value"}
+ :tables {"main-result"
+          [{"first result" -1820064361 "second result" -109620807}]
+          "timing"
+          [{"time" 756 "iteration" 0}
+           {"time" 151 "iteration" 1}
+           {"time" 169 "iteration" 2}
+           {"time" 1189 "iteration" 3}
+           {"time" 965 "iteration" 4}]}}
+```
+
+The JSON and EDN files are suitable for further processing using
+software such as [IPython](http://ipython.org) and
+[Incanter](http://incanter.org). The Emacs Org mode output file is a
+human readable format that can leverage the amazing capabilities of
+Emacs Org mode.
