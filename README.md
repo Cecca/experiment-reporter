@@ -1,6 +1,8 @@
 experiment-reporter
 ===================
 
+[![Build Status](https://travis-ci.org/Cecca/experiment-reporter.svg?branch=master)](https://travis-ci.org/Cecca/experiment-reporter)
+
 A simple library to report experimental results.
 
 When doing research work, software usually produces lots of logs from which
@@ -129,7 +131,7 @@ Date 2014-12-02T10:28:18.434+01:00
 ```
 
  - a JSON file
-  
+
   `File: reports/experiment-category/name/2014-12-02T10:28:18.434+01:00-20B50FC15CD87292576C9DD9BB322F2204DF995BD7192E7FDD177E34C81AED33.json`
 ```json
 {
