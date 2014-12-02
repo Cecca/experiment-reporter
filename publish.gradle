@@ -30,16 +30,16 @@ uploadArchives {
       }
 
       pom.project {
-        name 'Example Application'
+        name 'experiment-reporter'
         packaging 'jar'
         // optionally artifactId can be defined here
-        description 'A application used as an example on how to set up pushing  its components to the Central Repository.'
+        description 'A simple way to report experimental results'
         url 'http://www.example.com/example-application'
 
         scm {
-          connection 'scm:svn:http://foo.googlecode.com/svn/trunk/'
-          developerConnection 'scm:svn:https://foo.googlecode.com/svn/trunk/'
-          url 'http://foo.googlecode.com/svn/trunk/'
+          connection 'https://github.com/Cecca/experiment-reporter.git'
+          developerConnection 'https://github.com/Cecca/experiment-reporter.git'
+          url 'https://github.com/Cecca/experiment-reporter'
         }
 
         licenses {
@@ -51,9 +51,9 @@ uploadArchives {
 
         developers {
           developer {
-            id 'manfred'
-            name 'Manfred Moser'
-            email 'manfred@sonatype.com'
+            id 'ceccarel'
+            name 'Matteo Ceccarello'
+            email 'ceccarel@dei.unipd.it'
           }
         }
       }
