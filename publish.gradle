@@ -30,7 +30,7 @@ uploadArchives {
         packaging 'jar'
         // optionally artifactId can be defined here
         description 'A simple way to report experimental results'
-        url 'http://www.example.com/example-application'
+        url 'https://github.com/Cecca/experiment-reporter'
 
         scm {
           connection 'https://github.com/Cecca/experiment-reporter.git'
