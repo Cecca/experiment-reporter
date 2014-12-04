@@ -203,3 +203,18 @@ software such as [IPython](http://ipython.org) and
 [Incanter](http://incanter.org). The Emacs Org mode output file is a
 human readable format that can leverage the amazing capabilities of
 Emacs Org mode.
+
+Configuration with system properties
+------------------------------------
+
+Part of the behaviour of the library can be controlled using system
+properties:
+
+ - `experiment.category`: sets the category of the experiment. Ignored
+   by the `Experiment(String, String)` constructor.
+ - `experiment.name`: sets the name of the experiment. Ignored by the
+   `Experiment(String, String)` constructor.
+ - `experiments.report.dir`: configures the directory that will
+   contain the reports. Defaults to `./reports`
+ - `experiments.json.pretty`: boolean, configures whether the json
+   reports will be pretty-printed. Defaults to `false`.

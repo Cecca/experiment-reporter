@@ -52,6 +52,7 @@ import java.util.Map;
  *                              and {@link #append(String, java.util.Map)}</li>
  *   <li>Save as Ork-mode files: {@link #saveAsOrgFile()}</li>
  *   <li>Save as EDN files: {@link #saveAsEdnFile()}</li>
+ *   <li>Save as Json files: {@link #saveAsJsonFile()}</li>
  * </ul>
  */
 public class Experiment {
@@ -84,7 +85,7 @@ public class Experiment {
   /**
    * Returns a sha256 hash uniquely identifying this experiment
    */
-  public String sha256() {
+  protected String sha256() {
     try {
       MessageDigest sha = MessageDigest.getInstance("SHA-256");
       byte[] hash = sha.digest(this.toSimpleString().getBytes("UTF-16"));
@@ -146,6 +147,13 @@ public class Experiment {
    *   |---------+---------+---------|
    *   | value1  | value2  | value3  |
    * </code></pre>
+   *
+   * The only thing required to create a table is to call this method with the
+   * desired table name. A {@link it.unipd.dei.experiment.Table} object will be
+   * created automatically. The column names specified in the first call will
+   * also set the valid column headers for the new table. Subsequently, if this
+   * method is called with a different set of columns (order is does not matter),
+   * then an {@link java.lang.IllegalArgumentException} will be thrown.
    *
    * @param tableName the name of the table to which add the row.
    * @param rowElements the elements of the row, as a varargs array
@@ -260,8 +268,7 @@ public class Experiment {
   /**
    * Saves the experiment as a  <a href="http://orgmode.org/">Org-mode</a> file.
    *
-   * The file is saved in the given directory.
-   *
+   * @param directory The directory in which to save the org mode file
    * @throws FileNotFoundException
    */
   public void saveAsOrgFile(String directory) throws FileNotFoundException {
@@ -287,8 +294,7 @@ public class Experiment {
   /**
    * Saves the experiment as a <a href="https://github.com/edn-format/edn">EDN</a> file.
    *
-   * The file is saved in the given directory.
-   *
+   * @param directory the directory in which to save the EDN file
    * @throws FileNotFoundException
    */
   public void saveAsEdnFile(String directory) throws FileNotFoundException {
@@ -302,10 +308,10 @@ public class Experiment {
   /**
    * Saves the experiment as a JSON file.
    *
-   * The file is saved in the current working directory or in the directory specified
+   * The file is saved in the directory specified
    * by the system property {@code experiments.report.dir}.
    *
-   * The system property `experiment.json.pretty` controls the pretty printing of the output.
+   * The system property {@code experiment.json.pretty} controls the pretty printing of the output.
    *
    * @throws FileNotFoundException
    */
@@ -316,13 +322,11 @@ public class Experiment {
   }
 
   /**
-   * Saves the experiment as a JSON file. Has the control over the pretty printing
+   * Saves the experiment as a JSON file.
    *
-   * The file is saved in the current working directory or in the directory specified
-   * by the system property {@code experiments.report.dir}.
+   * The system property {@code experiment.json.pretty} controls the pretty printing of the output.
    *
-   * The system property `experiment.json.pretty` controls the pretty printing of the output.
-   *
+   * @param directory the directory in which to save the json file
    * @throws FileNotFoundException
    */
   public void saveAsJsonFile(String directory) throws FileNotFoundException {
@@ -331,11 +335,12 @@ public class Experiment {
   }
 
   /**
-   * Saves the experiment as a JSON file. Has the control over the pretty printing.
+   * Saves the experiment as a JSON file.
    *
-   * The file is saved in the current working directory or in the directory specified
-   * by the system property {@code experiments.report.dir}.
+   * The file is saved in the directory specified by the system
+   * property {@code experiments.report.dir}.
    *
+   * @param pretty whether to pretty print the Json file
    * @throws FileNotFoundException
    */
   public void saveAsJsonFile(boolean pretty) throws FileNotFoundException {
@@ -345,8 +350,8 @@ public class Experiment {
   /**
    * Saves the experiment as a JSON file.
    *
-   * The file is saved in the given directory.
-   *
+   * @param directory the directory in which to save the json file
+   * @param pretty whether to pretty print the Json file
    * @throws FileNotFoundException
    */
   public void saveAsJsonFile(String directory, boolean pretty) throws FileNotFoundException {
