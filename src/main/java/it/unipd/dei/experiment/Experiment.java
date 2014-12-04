@@ -148,6 +148,13 @@ public class Experiment {
    *   | value1  | value2  | value3  |
    * </code></pre>
    *
+   * The only thing required to create a table is to call this method with the
+   * desired table name. A {@link it.unipd.dei.experiment.Table} object will be
+   * created automatically. The column names specified in the first call will
+   * also set the valid column headers for the new table. Subsequently, if this
+   * method is called with a different set of columns (order is does not matter),
+   * then an {@link java.lang.IllegalArgumentException} will be thrown.
+   *
    * @param tableName the name of the table to which add the row.
    * @param rowElements the elements of the row, as a varargs array
    * @return a reference to {@code this} for method chaining
