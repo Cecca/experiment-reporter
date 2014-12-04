@@ -60,12 +60,26 @@ public class Experiment {
   private static DateTimeFormatter dateFormatter = ISODateTimeFormat.dateTime();
 
   private String category;
-  private DateTime date;
   private String name;
+  private DateTime date;
   private boolean successful;
   private List<Note> notes;
   private Map<String, Object> tags;
   private Map<String,Table> tables;
+
+  public Experiment() {
+    this(System.getProperty("experiment.category"), System.getProperty("experiment.name"));
+    if (this.category == null) {
+      throw new IllegalArgumentException(
+              "Experiment category can not be null. Please set " +
+              "it using the `experiment.category` system property.");
+    }
+    if (this.name == null) {
+      throw new IllegalArgumentException(
+              "Experiment name can not be null. Please set " +
+              "it using the `experiment.name` system property.");
+    }
+  }
 
   /**
    * Create a new experiment with the given name and assigned to the given category.
