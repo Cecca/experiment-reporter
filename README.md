@@ -214,7 +214,7 @@ properties:
    by the `Experiment(String, String)` constructor.
  - `experiment.name`: sets the name of the experiment. Ignored by the
    `Experiment(String, String)` constructor.
- - `experiments.report.dir`: configures the directory that will
+ - `experiment.report.dir`: configures the directory that will
    contain the reports. Defaults to `./reports`
- - `experiments.json.pretty`: boolean, configures whether the json
+ - `experiment.json.pretty`: boolean, configures whether the json
    reports will be pretty-printed. Defaults to `false`.

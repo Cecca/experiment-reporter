@@ -271,12 +271,12 @@ public class Experiment {
    * Saves the experiment as a  <a href="http://orgmode.org/">Org-mode</a> file.
    *
    * The file is saved in the current working directory or in the directory specified
-   * by the system property {@code experiments.report.dir}.
+   * by the system property {@code experiment.report.dir}.
    *
    * @throws FileNotFoundException
    */
   public void saveAsOrgFile() throws FileNotFoundException {
-    this.saveAsOrgFile(System.getProperty("experiments.report.dir", "./reports"));
+    this.saveAsOrgFile(System.getProperty("experiment.report.dir", "./reports"));
   }
 
   /**
@@ -297,12 +297,12 @@ public class Experiment {
    * Saves the experiment as a <a href="https://github.com/edn-format/edn">EDN</a> file.
    *
    * The file is saved in the current working directory or in the directory specified
-   * by the system property {@code experiments.report.dir}.
+   * by the system property {@code experiment.report.dir}.
    *
    * @throws FileNotFoundException
    */
   public void saveAsEdnFile() throws FileNotFoundException {
-    this.saveAsEdnFile(System.getProperty("experiments.report.dir", "./reports"));
+    this.saveAsEdnFile(System.getProperty("experiment.report.dir", "./reports"));
   }
 
   /**
@@ -323,7 +323,7 @@ public class Experiment {
    * Saves the experiment as a JSON file.
    *
    * The file is saved in the directory specified
-   * by the system property {@code experiments.report.dir}.
+   * by the system property {@code experiment.report.dir}.
    *
    * The system property {@code experiment.json.pretty} controls the pretty printing of the output.
    *
@@ -331,7 +331,7 @@ public class Experiment {
    */
   public void saveAsJsonFile() throws FileNotFoundException {
     this.saveAsJsonFile(
-            System.getProperty("experiments.report.dir", "./reports"),
+            System.getProperty("experiment.report.dir", "./reports"),
             Boolean.parseBoolean(System.getProperty("experiment.json.pretty", "false")));
   }
 
@@ -352,13 +352,13 @@ public class Experiment {
    * Saves the experiment as a JSON file.
    *
    * The file is saved in the directory specified by the system
-   * property {@code experiments.report.dir}.
+   * property {@code experiment.report.dir}.
    *
    * @param pretty whether to pretty print the Json file
    * @throws FileNotFoundException
    */
   public void saveAsJsonFile(boolean pretty) throws FileNotFoundException {
-    this.saveAsJsonFile(System.getProperty("experiments.report.dir", "./reports"), pretty);
+    this.saveAsJsonFile(System.getProperty("experiment.report.dir", "./reports"), pretty);
   }
 
   /**
