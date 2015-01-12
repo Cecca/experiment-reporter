@@ -116,7 +116,7 @@ public class Experiment {
    * @return a reference to {@code this} for method chaining
    */
   public Experiment failed() {
-    this.successful = true;
+    this.successful = false;
     return this;
   }
 
