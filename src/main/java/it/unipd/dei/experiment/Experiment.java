@@ -25,10 +25,7 @@ import javax.xml.bind.DatatypeConverter;
 import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Main entry point to the library. Representation of a generic experiment.
@@ -94,6 +91,35 @@ public class Experiment {
     notes = new LinkedList<Note>();
     tags = new HashMap<String, Object>();
     tables = new HashMap<String, Table>();
+
+    addSystemTags();
+  }
+
+  /**
+   * Adds all the properties starting with {@code experiment.tag}. The string
+   * {@code experiment.tag} is stripped from the comment and the value is
+   * converted to {@code int} or {@code double}, if possible.
+   */
+  protected void addSystemTags() {
+    String tagPrefix = "experiment.tag";
+    Properties props = System.getProperties();
+    for(String key : props.stringPropertyNames()) {
+      if(key.startsWith(tagPrefix)) {
+        String tagName = key.substring(tagPrefix.length()+1);
+        String property = props.getProperty(key);
+        Object value;
+        try {
+          value = Integer.parseInt(property);
+        } catch (Exception e1) {
+          try {
+            value = Double.parseDouble(property);
+          } catch (Exception e2) {
+            value = property;
+          }
+        }
+        this.tag(tagName, value);
+      }
+    }
   }
 
   /**

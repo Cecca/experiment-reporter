@@ -52,8 +52,8 @@ public class ExperimentTest {
       .append("table", secondRow);
 
     assertEquals(
-      exp1.getTables().get("table").getRows(),
-      exp2.getTables().get("table").getRows());
+            exp1.getTables().get("table").getRows(),
+            exp2.getTables().get("table").getRows());
   }
 
 }

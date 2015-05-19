@@ -218,3 +218,5 @@ properties:
    contain the reports. Defaults to `./reports`
  - `experiment.json.pretty`: boolean, configures whether the json
    reports will be pretty-printed. Defaults to `false`.
+ - experiment.tag.some-tag-name: Add a tag with the given name and value
+   to the experiment at invocation time.
