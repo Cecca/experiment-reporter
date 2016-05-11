@@ -56,36 +56,16 @@ public class Experiment {
 
   private static DateTimeFormatter dateFormatter = ISODateTimeFormat.dateTime();
 
-  private String category;
-  private String name;
   private DateTime date;
   private boolean successful;
   private List<Note> notes;
   private Map<String, Object> tags;
   private Map<String,Table> tables;
 
-  public Experiment() {
-    this(System.getProperty("experiment.category"), System.getProperty("experiment.name"));
-    if (this.category == null) {
-      throw new IllegalArgumentException(
-              "Experiment category can not be null. Please set " +
-              "it using the `experiment.category` system property.");
-    }
-    if (this.name == null) {
-      throw new IllegalArgumentException(
-              "Experiment name can not be null. Please set " +
-              "it using the `experiment.name` system property.");
-    }
-  }
-
   /**
-   * Create a new experiment with the given name and assigned to the given category.
-   * @param category the category of the experiment
-   * @param name the name of the experiment
+   * Create a new experiment, reading eventual tags from system properties.
    */
-  public Experiment(String category, String name) {
-    this.category = category;
-    this.name = name;
+  public Experiment() {
     this.successful = true;
     this.date = DateTime.now();
     notes = new LinkedList<Note>();
@@ -228,8 +208,8 @@ public class Experiment {
    */
   public String toSimpleString() {
     StringBuffer sb = new StringBuffer();
-    sb.append("==== ").append(name)
-      .append(" [").append(category).append("] ")
+    sb.append("==== ")
+      .append("Date ").append(dateFormatter.print(date))
       .append(" ====\n\n");
     sb.append("Date ").append(dateFormatter.print(date)).append("\n\n");
     sb.append("---- Tags ----\n\n");
@@ -247,16 +227,7 @@ public class Experiment {
 
   @Override
   public String toString() {
-    return "Experiment{category = " + category +
-        ", name" + name + ", " + dateFormatter.print(date) + "}";
-  }
-
-  protected String getCategory() {
-    return category;
-  }
-
-  protected String getName() {
-    return name;
+    return "Experiment{" + dateFormatter.print(date) + "}";
   }
 
   protected DateTime getDate() {
@@ -280,8 +251,7 @@ public class Experiment {
   }
 
   private File getOutDir(String directory) {
-    File catDir = new File(directory, category);
-    File dir = new File(catDir, name);
+    File dir = new File(directory);
     if(!dir.exists() && !dir.mkdirs()) {
       throw new RuntimeException("Cannot create " + directory + "directory");
     }

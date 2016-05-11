@@ -23,11 +23,12 @@ public class Example {
   public static void main(String[] args) throws FileNotFoundException, InterruptedException {
     int experimentIterations = 5;
 
-    // Setup the experiment, with category and name
-    Experiment experiment = new Experiment("experiment-category", "name");
+    // Setup the experiment
+    Experiment experiment = new Experiment();
 
     // record the input parameters
     experiment
+      .tag("name", "example")
       .tag("parameter 1", 123)
       .tag("another parameter", "value");
 

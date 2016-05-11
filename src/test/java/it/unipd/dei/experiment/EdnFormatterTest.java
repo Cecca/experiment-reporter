@@ -36,7 +36,7 @@ public class EdnFormatterTest {
 
   @Test
   public void testEdn1() {
-    Experiment exp = new Experiment("exp-category", "exp-name");
+    Experiment exp = new Experiment();
     String edn = EdnFormatter.format(exp);
     Object parsed = RT.readString(edn);
 
@@ -44,8 +44,6 @@ public class EdnFormatterTest {
 
     IPersistentMap expMap = (IPersistentMap) parsed;
 
-    assertEquals(expMap.valAt(CLASS), "exp-category");
-    assertEquals(expMap.valAt(NAME), "exp-name");
     assertEquals(expMap.valAt(NOTES), PersistentVector.EMPTY);
     assertEquals(expMap.valAt(TAGS), PersistentArrayMap.EMPTY);
     assertEquals(expMap.valAt(TABLES), PersistentArrayMap.EMPTY);
@@ -53,7 +51,7 @@ public class EdnFormatterTest {
 
   @Test
   public void testEdnDate() {
-    Experiment exp = new Experiment("exp-category", "exp-name");
+    Experiment exp = new Experiment();
     exp.note("This is a test note");
 
     String edn = EdnFormatter.format(exp);
@@ -65,7 +63,7 @@ public class EdnFormatterTest {
 
   @Test
   public void testEdnNotes() {
-    Experiment exp = new Experiment("exp-category", "exp-name");
+    Experiment exp = new Experiment();
     exp.note("This is a test note");
 
     String edn = EdnFormatter.format(exp);
@@ -84,7 +82,7 @@ public class EdnFormatterTest {
   @Test
   public void testEdnTags() {
     Experiment exp =
-      new Experiment("exp-category", "exp-name")
+      new Experiment()
         .tag("tag1", "value 1")
         .tag("tag2", 1234L);
 
@@ -102,7 +100,7 @@ public class EdnFormatterTest {
   @Test
   public void testEdnTables() {
     Experiment exp =
-      new Experiment("exp-category", "exp-name")
+      new Experiment()
         .append("table1",
           "head1", "val1",
           "head2", "val2")

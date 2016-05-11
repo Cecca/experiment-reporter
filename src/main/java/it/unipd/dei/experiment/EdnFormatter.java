@@ -34,8 +34,6 @@ public class EdnFormatter {
   private String statefulFormat(Experiment experiment) {
     StringBuffer sb = new StringBuffer();
     sb.append("{");
-    sb.append(formatCategory(experiment)).append(" ");
-    sb.append(" ").append(formatName(experiment)).append(" ");
     sb.append(" ").append(formatSha(experiment)).append(" ");
     sb.append(" ").append(formatSuccess(experiment)).append(" ");
     sb.append(" ").append(formatDate(experiment)).append(" ");
@@ -44,14 +42,6 @@ public class EdnFormatter {
     sb.append(" ").append(formatTables(experiment));
     sb.append("}");
     return sb.toString();
-  }
-
-  private String formatCategory(Experiment exp) {
-    return keyword("category") + " " + fmt(exp.getCategory());
-  }
-
-  private String formatName(Experiment exp) {
-    return keyword("name") + " " + fmt(exp.getName());
   }
 
   private String formatSha(Experiment exp) {

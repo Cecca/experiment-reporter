@@ -27,8 +27,8 @@ public class ExperimentTest {
   @Test
   public void testAppendApi() {
     Experiment
-      exp1 = new Experiment("test", "test"),
-      exp2 = new Experiment("test", "test");
+      exp1 = new Experiment(),
+      exp2 = new Experiment();
 
     exp1
       .append("table",

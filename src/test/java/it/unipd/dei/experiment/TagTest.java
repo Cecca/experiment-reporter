@@ -29,7 +29,7 @@ public class TagTest {
   @Test
   public void testSystemTagsSingle() {
     System.setProperty("experiment.tag.test", "1");
-    Experiment exp = new Experiment("test", "test");
+    Experiment exp = new Experiment();
 
     Map<String, Object> tags = exp.getTags();
 
@@ -42,7 +42,7 @@ public class TagTest {
   public void testSystemTagsMultiple() {
     System.setProperty("experiment.tag.test", "1");
     System.setProperty("experiment.tag.some-string", "a string");
-    Experiment exp = new Experiment("test", "test");
+    Experiment exp = new Experiment();
 
     Map<String, Object> tags = exp.getTags();
 
@@ -56,7 +56,7 @@ public class TagTest {
 
   @Test
   public void testSystemTagsEmpty() {
-    Experiment exp = new Experiment("test", "test");
+    Experiment exp = new Experiment();
 
     Map<String, Object> tags = exp.getTags();
 
@@ -68,7 +68,7 @@ public class TagTest {
   public void testSystemTagsNumeric() {
     System.setProperty("experiment.tag.test-integer", "1");
     System.setProperty("experiment.tag.test-double", "3.14");
-    Experiment exp = new Experiment("test", "test");
+    Experiment exp = new Experiment();
 
     Map<String, Object> tags = exp.getTags();
 
