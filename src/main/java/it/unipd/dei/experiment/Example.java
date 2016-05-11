@@ -53,10 +53,8 @@ public class Example {
       "first result", result1,
       "second result", result2);
 
-    // report to console and to an EDN file
+    // report to console and to a json file
     System.out.println(experiment.toSimpleString());
-    experiment.saveAsEdnFile();
-    experiment.saveAsOrgFile();
     experiment.saveAsJsonFile(true);
   }
 

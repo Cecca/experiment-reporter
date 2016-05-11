@@ -19,7 +19,6 @@ dependencies {
   compile "com.google.code.gson:gson:2.3"
 
   testCompile "junit:junit:4.11"
-  testCompile "org.clojure:clojure:1.6.0"
 
 }
 

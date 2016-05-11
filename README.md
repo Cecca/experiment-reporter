@@ -32,8 +32,8 @@ several iterations. We want to record the input parameters, the timing of
 each iteration and the two numerical results (here generated at random).
 
 ```java
-// Setup the experiment, with category and name
-Experiment experiment = new Experiment("experiment-category", "name");
+// Setup the experiment
+Experiment experiment = new Experiment();
 
 // record the input parameters
 experiment
@@ -64,14 +64,8 @@ experiment.append("main-result",
 // report to console
 System.out.println(experiment.toSimpleString());
 
-// report to an Emacs Org mode file
-experiment.saveAsOrgFile();
-
 // report to a pretty printed JSON file
 experiment.saveAsJsonFile(true);
-
-// report to an EDN file
-experiment.saveAsEdnFile();
 ```
 
 This will generate the following outputs
@@ -79,9 +73,7 @@ This will generate the following outputs
  - on the console
 
 ```
-==== name [experiment-category]  ====
-
-Date 2014-12-02T10:28:18.434+01:00
+==== 2014-12-02T10:28:18.434+01:00 ====
 
 ---- Tags ----
 
@@ -98,29 +90,6 @@ Date 2014-12-02T10:28:18.434+01:00
 
 -- timing --
 
-| time | iteration |
-|------+-----------|
-| 756  | 0         |
-| 151  | 1         |
-| 169  | 2         |
-| 1189 | 3         |
-| 965  | 4         |
-```
-
- - an Emacs Org mode file
-
-```org-mode
-* name  [2014-12-02 mar 10:28]      :experiment-category:
-** Tags
-   - parameter 1 : 123
-   - another parameter : value
-** Tables
-*** main-result
-| first result | second result |
-|--------------+---------------|
-| -1820064361  | -109620807    |
-
-*** timing
 | time | iteration |
 |------+-----------|
 | 756  | 0         |
@@ -177,32 +146,9 @@ Date 2014-12-02T10:28:18.434+01:00
 }
 ```
 
- - an [EDN](https://github.com/edn-format/edn) file
-
-```clojure
-;; File: reports/experiment-category-name/2014-12-02T10:28:18.434+01:00-20B50FC15CD87292576C9DD9BB322F2204DF995BD7192E7FDD177E34C81AED33.edn
-{:category "experiment-category"
- :name "name"
- :id "20B50FC15CD87292576C9DD9BB322F2204DF995BD7192E7FDD177E34C81AED33"
- :successful true
- :date #inst "2014-12-02T10:28:18.434+01:00"
- :notes []
- :tags {"parameter 1" 123 "another parameter" "value"}
- :tables {"main-result"
-          [{"first result" -1820064361 "second result" -109620807}]
-          "timing"
-          [{"time" 756 "iteration" 0}
-           {"time" 151 "iteration" 1}
-           {"time" 169 "iteration" 2}
-           {"time" 1189 "iteration" 3}
-           {"time" 965 "iteration" 4}]}}
-```
-
-The JSON and EDN files are suitable for further processing using
+The JSON file is suitable for further processing using
 software such as [IPython](http://ipython.org) and
-[Incanter](http://incanter.org). The Emacs Org mode output file is a
-human readable format that can leverage the amazing capabilities of
-Emacs Org mode.
+[Incanter](http://incanter.org). 
 
 Configuration with system properties
 ------------------------------------
@@ -210,13 +156,9 @@ Configuration with system properties
 Part of the behaviour of the library can be controlled using system
 properties:
 
- - `experiment.category`: sets the category of the experiment. Ignored
-   by the `Experiment(String, String)` constructor.
- - `experiment.name`: sets the name of the experiment. Ignored by the
-   `Experiment(String, String)` constructor.
  - `experiment.report.dir`: configures the directory that will
    contain the reports. Defaults to `./reports`
  - `experiment.json.pretty`: boolean, configures whether the json
    reports will be pretty-printed. Defaults to `false`.
- - experiment.tag.some-tag-name: Add a tag with the given name and value
+ - `experiment.tag.some-tag-name`: Add a tag with the given name and value
    to the experiment at invocation time.

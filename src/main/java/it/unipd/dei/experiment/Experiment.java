@@ -15,8 +15,6 @@
 
 package it.unipd.dei.experiment;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
@@ -47,8 +45,6 @@ import java.util.*;
  *   <li>Mark the experiment as failed: {@link #failed()}</li>
  *   <li>Append rows to tables: {@link #append(String, Object...)}
  *                              and {@link #append(String, java.util.Map)}</li>
- *   <li>Save as Ork-mode files: {@link #saveAsOrgFile()}</li>
- *   <li>Save as EDN files: {@link #saveAsEdnFile()}</li>
  *   <li>Save as Json files: {@link #saveAsJsonFile()}</li>
  * </ul>
  */
@@ -261,58 +257,6 @@ public class Experiment {
   private File getOutFile(File dir, String extension) {
     String fileName = dateFormatter.print(date) + "-" + sha256() + extension;
     return new File(dir, fileName);
-  }
-
-  /**
-   * Saves the experiment as a  <a href="http://orgmode.org/">Org-mode</a> file.
-   *
-   * The file is saved in the current working directory or in the directory specified
-   * by the system property {@code experiment.report.dir}.
-   *
-   * @throws FileNotFoundException
-   */
-  public void saveAsOrgFile() throws FileNotFoundException {
-    this.saveAsOrgFile(System.getProperty("experiment.report.dir", "./reports"));
-  }
-
-  /**
-   * Saves the experiment as a  <a href="http://orgmode.org/">Org-mode</a> file.
-   *
-   * @param directory The directory in which to save the org mode file
-   * @throws FileNotFoundException
-   */
-  public void saveAsOrgFile(String directory) throws FileNotFoundException {
-    File dir = getOutDir(directory);
-    File outFile = getOutFile(dir, ".org");
-    PrintWriter out = new PrintWriter(new FileOutputStream(outFile));
-    out.write(OrgFileFormatter.format(this));
-    out.close();
-  }
-
-  /**
-   * Saves the experiment as a <a href="https://github.com/edn-format/edn">EDN</a> file.
-   *
-   * The file is saved in the current working directory or in the directory specified
-   * by the system property {@code experiment.report.dir}.
-   *
-   * @throws FileNotFoundException
-   */
-  public void saveAsEdnFile() throws FileNotFoundException {
-    this.saveAsEdnFile(System.getProperty("experiment.report.dir", "./reports"));
-  }
-
-  /**
-   * Saves the experiment as a <a href="https://github.com/edn-format/edn">EDN</a> file.
-   *
-   * @param directory the directory in which to save the EDN file
-   * @throws FileNotFoundException
-   */
-  public void saveAsEdnFile(String directory) throws FileNotFoundException {
-    File dir = getOutDir(directory);
-    File outFile = getOutFile(dir, ".edn");
-    PrintWriter out = new PrintWriter(new FileOutputStream(outFile));
-    out.write(EdnFormatter.format(this));
-    out.close();
   }
 
   /**
