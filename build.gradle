@@ -5,7 +5,7 @@ apply plugin: 'signing'
 
 group = 'it.unipd.dei'
 archivesBaseName = 'experiment-reporter'
-version = '0.2.0'
+version = '0.3.0'
 
 sourceCompatibility = '1.6'
 
