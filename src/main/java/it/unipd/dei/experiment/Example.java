@@ -55,7 +55,7 @@ public class Example {
 
     // report to console and to a json file
     System.out.println(experiment.toSimpleString());
-    experiment.saveAsJsonFile(true);
+    experiment.saveAsJsonFile();
   }
 
 }

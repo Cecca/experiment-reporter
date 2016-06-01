@@ -28,16 +28,9 @@ public class JsonFormatter {
   }
 
   public static String format(Experiment experiment) {
-    return format(experiment, false);
-  }
-
-  public static String format(Experiment experiment, boolean pretty) {
     GsonBuilder gsonBuild = new GsonBuilder()
             .registerTypeAdapter(DateTime.class, new DateTimeSerializer())
             .registerTypeAdapter(Table.class, new TableSerializer());
-
-    if(pretty)
-      gsonBuild.setPrettyPrinting();
 
     Gson gson = gsonBuild.create();
 

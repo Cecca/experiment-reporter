@@ -265,54 +265,24 @@ public class Experiment {
    * The file is saved in the directory specified
    * by the system property {@code experiment.report.dir}.
    *
-   * The system property {@code experiment.json.pretty} controls the pretty printing of the output.
-   *
    * @throws FileNotFoundException
    */
   public void saveAsJsonFile() throws FileNotFoundException {
     this.saveAsJsonFile(
-            System.getProperty("experiment.report.dir", "./reports"),
-            Boolean.parseBoolean(System.getProperty("experiment.json.pretty", "false")));
+            System.getProperty("experiment.report.dir", "./reports"));
   }
 
   /**
    * Saves the experiment as a JSON file.
-   *
-   * The system property {@code experiment.json.pretty} controls the pretty printing of the output.
    *
    * @param directory the directory in which to save the json file
    * @throws FileNotFoundException
    */
   public void saveAsJsonFile(String directory) throws FileNotFoundException {
-    this.saveAsJsonFile(directory,
-            Boolean.parseBoolean(System.getProperty("experiment.json.pretty", "false")));
-  }
-
-  /**
-   * Saves the experiment as a JSON file.
-   *
-   * The file is saved in the directory specified by the system
-   * property {@code experiment.report.dir}.
-   *
-   * @param pretty whether to pretty print the Json file
-   * @throws FileNotFoundException
-   */
-  public void saveAsJsonFile(boolean pretty) throws FileNotFoundException {
-    this.saveAsJsonFile(System.getProperty("experiment.report.dir", "./reports"), pretty);
-  }
-
-  /**
-   * Saves the experiment as a JSON file.
-   *
-   * @param directory the directory in which to save the json file
-   * @param pretty whether to pretty print the Json file
-   * @throws FileNotFoundException
-   */
-  public void saveAsJsonFile(String directory, boolean pretty) throws FileNotFoundException {
     File dir = getOutDir(directory);
     File outFile = getOutFile(dir, ".json");
     PrintWriter out = new PrintWriter(new FileOutputStream(outFile));
-    out.write(JsonFormatter.format(this, pretty));
+    out.write(JsonFormatter.format(this));
     out.close();
   }
 

@@ -64,8 +64,8 @@ experiment.append("main-result",
 // report to console
 System.out.println(experiment.toSimpleString());
 
-// report to a pretty printed JSON file
-experiment.saveAsJsonFile(true);
+// report to a JSON file
+experiment.saveAsJsonFile();
 ```
 
 This will generate the following outputs
@@ -158,7 +158,5 @@ properties:
 
  - `experiment.report.dir`: configures the directory that will
    contain the reports. Defaults to `./reports`
- - `experiment.json.pretty`: boolean, configures whether the json
-   reports will be pretty-printed. Defaults to `false`.
  - `experiment.tag.some-tag-name`: Add a tag with the given name and value
    to the experiment at invocation time.
