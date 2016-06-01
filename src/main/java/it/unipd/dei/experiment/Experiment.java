@@ -24,6 +24,7 @@ import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * Main entry point to the library. Representation of a generic experiment.
@@ -265,23 +266,46 @@ public class Experiment {
    * The file is saved in the directory specified
    * by the system property {@code experiment.report.dir}.
    *
+   * The system property {@code experiment.report.compress}
+   *
    * @throws FileNotFoundException
    */
-  public void saveAsJsonFile() throws FileNotFoundException {
+  public void saveAsJsonFile() throws IOException {
     this.saveAsJsonFile(
-            System.getProperty("experiment.report.dir", "./reports"));
+      System.getProperty("experiment.report.dir", "./reports"),
+      Boolean.parseBoolean(System.getProperty("experiment.report.compress", "true")));
+  }
+
+  /**
+   * Saves the experiment as a JSON file.
+   *
+   * The file is saved in the directory specified
+   * by the system property {@code experiment.report.dir}.
+   *
+   * @param compress whether or not the file should be compressed with gzip
+   * @throws FileNotFoundException
+   */
+  public void saveAsJsonFile(boolean compress) throws IOException {
+    this.saveAsJsonFile(
+      System.getProperty("experiment.report.dir", "./reports"),
+      compress);
   }
 
   /**
    * Saves the experiment as a JSON file.
    *
    * @param directory the directory in which to save the json file
+   * @param compress whether or not the file should be compressed with gzip
    * @throws FileNotFoundException
    */
-  public void saveAsJsonFile(String directory) throws FileNotFoundException {
+  public void saveAsJsonFile(String directory, boolean compress) throws IOException {
+    String extension = (compress)? ".json.gz" : ".json";
     File dir = getOutDir(directory);
-    File outFile = getOutFile(dir, ".json");
-    PrintWriter out = new PrintWriter(new FileOutputStream(outFile));
+    File outFile = getOutFile(dir, extension);
+    OutputStream os = (compress)?
+      new GZIPOutputStream(new FileOutputStream(outFile)) :
+      new FileOutputStream(outFile);
+    PrintWriter out = new PrintWriter(os);
     out.write(JsonFormatter.format(this));
     out.close();
   }

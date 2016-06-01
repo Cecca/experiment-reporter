@@ -15,12 +15,12 @@
 
 package it.unipd.dei.experiment;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Random;
 
 public class Example {
 
-  public static void main(String[] args) throws FileNotFoundException, InterruptedException {
+  public static void main(String[] args) throws IOException, InterruptedException {
     int experimentIterations = 5;
 
     // Setup the experiment

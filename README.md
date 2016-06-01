@@ -158,5 +158,7 @@ properties:
 
  - `experiment.report.dir`: configures the directory that will
    contain the reports. Defaults to `./reports`
+ - `experiment.report.compress`: whether or not the file should be compressed with gzip.
+   Defaults to `true`
  - `experiment.tag.some-tag-name`: Add a tag with the given name and value
    to the experiment at invocation time.
