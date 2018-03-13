@@ -42,8 +42,6 @@ import java.util.zip.GZIPOutputStream;
  *
  * Several operations can be performed on Experiment objects:
  * <ul>
- *   <li>Add notes and tags: {@link #note(String)}, {@link #tag(String, Object)}</li>
- *   <li>Mark the experiment as failed: {@link #failed()}</li>
  *   <li>Append rows to tables: {@link #append(String, Object...)}
  *                              and {@link #append(String, java.util.Map)}</li>
  *   <li>Save as Json files: {@link #saveAsJsonFile()}</li>
@@ -54,8 +52,6 @@ public class Experiment {
   private static DateTimeFormatter dateFormatter = ISODateTimeFormat.dateTime();
 
   private DateTime date;
-  private boolean successful;
-  private List<Note> notes;
   private Map<String, Object> tags;
   private Map<String,Table> tables;
 
@@ -63,9 +59,7 @@ public class Experiment {
    * Create a new experiment, reading eventual tags from system properties.
    */
   public Experiment() {
-    this.successful = true;
     this.date = DateTime.now();
-    notes = new LinkedList<Note>();
     tags = new HashMap<String, Object>();
     tables = new HashMap<String, Table>();
 
@@ -115,15 +109,6 @@ public class Experiment {
   }
 
   /**
-   * Marks the experiment as failed.
-   * @return a reference to {@code this} for method chaining
-   */
-  public Experiment failed() {
-    this.successful = false;
-    return this;
-  }
-
-  /**
    * Adds a tag to this experiment.
    * @param name the name of the tag
    * @param value the value of the tag
@@ -131,17 +116,6 @@ public class Experiment {
    */
   public Experiment tag(String name, Object value) {
     tags.put(name, value);
-    return this;
-  }
-
-  /**
-   * Adds a note to the experiment. A note can be any string. A typical use case is
-   * to record an exception.
-   * @param message the message of the note
-   * @return a reference to {@code this} for method chaining
-   */
-  public Experiment note(String message) {
-    notes.add(new Note(DateTime.now(), message));
     return this;
   }
 
@@ -237,14 +211,6 @@ public class Experiment {
 
   protected Map<String, Table> getTables() {
     return tables;
-  }
-
-  public List<Note> getNotes() {
-    return notes;
-  }
-
-  public boolean isSuccessful() {
-    return successful;
   }
 
   private File getOutDir(String directory) {
