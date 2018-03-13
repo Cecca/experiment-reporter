@@ -221,8 +221,13 @@ public class Experiment {
     return dir;
   }
 
-  private File getOutFile(File dir, String extension) {
-    String fileName = dateFormatter.print(date) + "-" + sha256() + extension;
+  private File getOutFile(File dir, String extension, boolean append) {
+    String fileName;
+    if (append) {
+      fileName = System.getProperty("experiment.reporter.append.name", "results") + extension;
+    } else {
+      fileName = dateFormatter.print(date) + "-" + sha256() + extension;
+    }
     return new File(dir, fileName);
   }
 
@@ -239,7 +244,8 @@ public class Experiment {
   public void saveAsJsonFile() throws IOException {
     this.saveAsJsonFile(
       System.getProperty("experiment.report.dir", "./reports"),
-      Boolean.parseBoolean(System.getProperty("experiment.report.compress", "true")));
+      Boolean.parseBoolean(System.getProperty("experiment.reporter.compress", "true")),
+      Boolean.parseBoolean(System.getProperty("experiment.reporter.append", "true")));
   }
 
   /**
@@ -251,10 +257,11 @@ public class Experiment {
    * @param compress whether or not the file should be compressed with gzip
    * @throws FileNotFoundException
    */
-  public void saveAsJsonFile(boolean compress) throws IOException {
+  public void saveAsJsonFile(boolean compress, boolean append) throws IOException {
     this.saveAsJsonFile(
       System.getProperty("experiment.report.dir", "./reports"),
-      compress);
+      compress,
+      append);
   }
 
   /**
@@ -264,26 +271,16 @@ public class Experiment {
    * @param compress whether or not the file should be compressed with gzip
    * @throws FileNotFoundException
    */
-  public void saveAsJsonFile(String directory, boolean compress) throws IOException {
+  public void saveAsJsonFile(String directory, boolean compress, boolean append) throws IOException {
     String extension = (compress)? ".json.gz" : ".json";
     File dir = getOutDir(directory);
-    File outFile = getOutFile(dir, extension);
-    OutputStream os = (compress)?
-      new GZIPOutputStream(new FileOutputStream(outFile)) :
-      new FileOutputStream(outFile);
+    File outFile = getOutFile(dir, extension, append);
+    FileOutputStream fos = new FileOutputStream(outFile, append);
+    OutputStream os = (compress)? new GZIPOutputStream(fos) : fos;
     PrintWriter out = new PrintWriter(os);
     out.write(JsonFormatter.format(this));
+    out.write("\n");
     out.close();
-  }
-
-  protected static class Note {
-    protected DateTime date;
-    protected String message;
-
-    public Note(DateTime date, String message) {
-      this.date = date;
-      this.message = message;
-    }
   }
 
 }
